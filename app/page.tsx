@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Beaker, ShieldCheck, FlaskConical, TrendingUp, FileSignature, Mail, Globe2 } from "lucide-react";
+import Image from "next/image";
 
 const COPY = {
   en: {
@@ -141,36 +142,54 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="container py-20 md:py-24">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-6xl font-bold leading-tight"
-          >
-            {t.brand}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="mt-4 text-lg md:text-2xl text-white/90 max-w-3xl"
-          >
-            {t.tagline}
-          </motion.p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a className="btn btn-primary" href="mailto:larissa.guimaraes@cellunovaresearch.com?subject=NDA%20Request%20—%20CelluNOVA%20Research">
-              <FileSignature className="w-4 h-4" /> {t.cta_primary}
-            </a>
-            <a className="btn btn-secondary" href="mailto:larissa.guimaraes@cellunovaresearch.com">
-              <Mail className="w-4 h-4" /> {t.cta_secondary}
-            </a>
-          </div>
-        </div>
-        <div className="absolute -bottom-24 -right-24 w-[36rem] h-[36rem] rounded-full bg-white/10 blur-3xl" />
-      </section>
+     {/* Hero com imagem à direita */}
+<section className="relative overflow-hidden">
+  <div className="container py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
+    {/* Lado esquerdo: texto e CTAs */}
+    <div>
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-4xl md:text-6xl font-bold leading-tight"
+      >
+        {t.brand}
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.1 }}
+        className="mt-4 text-lg md:text-2xl text-white/90 max-w-3xl"
+      >
+        {t.tagline}
+      </motion.p>
+
+      <div className="mt-8 flex flex-wrap gap-3">
+        <a className="btn btn-primary" href="mailto:larissa.guimaraes@cellunovaresearch.com?subject=NDA%20Request%20—%20CelluNOVA%20Research">
+          <FileSignature className="w-4 h-4" /> {t.cta_primary}
+        </a>
+        <a className="btn btn-secondary" href="mailto:larissa.guimaraes@cellunovaresearch.com">
+          <Mail className="w-4 h-4" /> {t.cta_secondary}
+        </a>
+      </div>
+    </div>
+
+    {/* Lado direito: imagem */}
+    <div className="relative w-full aspect-[4/5] md:aspect-[5/6] rounded-2xl overflow-hidden border border-white/10 shadow-xl">
+      <Image
+        src="/hero-cellunova.jpg"   // arquivo que você subiu em /public
+        alt="CelluNOVA — Genius is eternal. Now, youth is too."
+        fill
+        className="object-cover"
+        priority
+      />
+    </div>
+  </div>
+
+  {/* Glow decorativo (opcional) */}
+  <div className="absolute -bottom-24 -right-24 w-[36rem] h-[36rem] rounded-full bg-white/10 blur-3xl" />
+</section>
 
       {/* Value Props */}
       <section className="py-12">
