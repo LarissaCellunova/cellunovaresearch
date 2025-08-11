@@ -1,271 +1,3051 @@
 "use client";
 
-import { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { Beaker, ShieldCheck, FlaskConical, TrendingUp, FileSignature, Mail, Globe2 } from "lucide-react";
+import { FlaskConical, ShieldCheck, Leaf, Clock, CheckCircle2, Star, Microscope, Beaker, PackageCheck, ExternalLink } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
-const COPY = {
-  en: {
-    brand: "CelluNOVA Research",
-    tagline: "Licensing breakthrough bioactive formulas — without revealing the secret.",
-    cta_primary: "Request NDA & Deck",
-    cta_secondary: "Email us",
-    sections: {
-      value: {
-        title: "Why partner with us",
-        points: [
-          { icon: "Beaker", title: "Proven science", text: "Formulas engineered with high‑performance natural actives and a scalable manufacturing pathway."},
-          { icon: "ShieldCheck", title: "IP-first model", text: "Confidential technical dossier disclosed only under NDA; royalty-based licensing aligned with your growth."},
-          { icon: "TrendingUp", title: "Go-to‑market speed", text: "Regulatory‑ready positioning, claims roadmap, and co-marketing support for rapid launch."}
-        ]
+export const metadata = {
+  title: "CelluNOVA DermoRebirth™ | Licenciamento de Blend – Bioactive Rejuvenation Formula",
+  description:
+    "DermoRebirth™ é o blend premium da CelluNOVA com Tremella, NMN, Chaga, Fisetina e Espermidina. Fórmula bioativa disponível para licenciamento B2B a empresas parceiras.",
+  openGraph: {
+    title: "CelluNOVA DermoRebirth™",
+    description:
+      "Blend premium com Tremella, NMN, Chaga, Fisetina e Espermidina. Disponível para licenciamento empresarial.",
+    url: "https://www.cellunovaresearch.com/",
+    siteName: "CelluNOVA Research",
+    images: [
+      {
+        url: "/images/propaganda-albert.png",
+        width: 1200,
+        height: 630,
+        alt: "Campanha CelluNOVA DermoRebirth™ — Genius is eternal. Now, youth is too.",
       },
-      tech: {
-        title: "Technology at a glance",
-        bullets: [
-          "Exclusive synergistic complex of bioactive ingredients",
-          "Manufacturing process validated for scale‑up",
-          "Premium positioning with strong consumer acceptance",
-          "Multiple line extensions possible (topical & ingestible)"
-        ]
-      },
-      market: {
-        title: "Market opportunity",
-        lead: "Beauty, wellness, and longevity categories are converging — creating outsized demand for clinically credible products.",
-        bullets: [
-          "Growing consumer spend on science‑backed actives",
-          "Trade partners prioritizing premium, high‑margin SKUs",
-          "Global expansion paths across LATAM, North America, and EU"
-        ]
-      },
-      licensing: {
-        title: "Licensing model",
-        items: [
-          "Territory and category exclusivity options",
-          "Royalty on net sales with performance tiers",
-          "Tech transfer + onboarding playbook",
-          "Co‑branding optional; white‑label supported"
-        ]
-      },
-      contact: {
-        title: "Let's talk",
-        text: "Request an NDA to access the full technical file and commercial deck.",
-        email_label: "Write to",
-      }
-    },
-    footer: {
-      rights: "All rights reserved",
-      address: "Brazil • Global partnerships",
-    }
+    ],
+    locale: "pt_BR",
+    type: "website",
   },
-  pt: {
-    brand: "CelluNOVA Research",
-    tagline: "Licenciamento de fórmulas bioativas — sem revelar o segredo.",
-    cta_primary: "Solicitar NDA e Apresentação",
-    cta_secondary: "Enviar e‑mail",
-    sections: {
-      value: {
-        title: "Por que ser nosso parceiro",
-        points: [
-          { icon: "Beaker", title: "Ciência comprovada", text: "Fórmulas com ativos naturais de alto desempenho e caminho de fabricação escalável."},
-          { icon: "ShieldCheck", title: "Modelo focado em PI", text: "Dossiê técnico confidencial somente sob NDA; royalties alinhados ao crescimento do parceiro."},
-          { icon: "TrendingUp", title: "Agilidade ao mercado", text: "Posicionamento regulatório, plano de claims e co‑marketing para lançamento rápido."}
-        ]
-      },
-      tech: {
-        title: "Tecnologia em destaque",
-        bullets: [
-          "Complexo sinérgico exclusivo de ingredientes bioativos",
-          "Processo de fabricação validado para escala",
-          "Posicionamento premium com alta aceitação",
-          "Expansão de portfólio (tópico e oral)"
-        ]
-      },
-      market: {
-        title: "Oportunidade de mercado",
-        lead: "Beleza, bem‑estar e longevidade estão convergindo — elevando a demanda por produtos com lastro clínico.",
-        bullets: [
-          "Crescimento do gasto do consumidor em ativos com evidência",
-          "Varejo priorizando SKUs premium e de alta margem",
-          "Rotas de expansão global: LATAM, América do Norte e UE"
-        ]
-      },
-      licensing: {
-        title: "Modelo de licenciamento",
-        items: [
-          "Opções de exclusividade por território e categoria",
-          "Royalties sobre vendas líquidas com faixas de performance",
-          "Transferência de tecnologia + playbook de onboarding",
-          "Co‑branding opcional; white‑label suportado"
-        ]
-      },
-      contact: {
-        title: "Vamos conversar",
-        text: "Solicite um NDA para acessar o dossiê técnico completo e o deck comercial.",
-        email_label: "Escreva para",
-      }
-    },
-    footer: {
-      rights: "Todos os direitos reservados",
-      address: "Brasil • Parcerias globais",
-    }
-  }
-} as const;
-
-const Icon = ({name}:{name: keyof typeof import('lucide-react')}) => {
-  const M: any = { Beaker, ShieldCheck, TrendingUp };
-  const C = (M as any)[name as any] || Beaker;
-  return <C className="w-5 h-5" />;
 };
 
-export default function Page() {
-  const [lang, setLang] = useState<'en'|'pt'>('en');
-  const t = COPY[lang];
+const features = [
+  { icon: ShieldCheck, title: "Qualidade Premium", text: "Matérias-primas selecionadas e lote rastreável." },
+  { icon: FlaskConical, title: "Baseado em Evidências", text: "Blend desenvolvido com literatura científica de referência.*" },
+  { icon: Leaf, title: "Clean Label", text: "Sem corantes artificiais. Sem glúten." },
+  { icon: Clock, title: "Pronto para Licenciamento", text: "Integração ágil no portfólio da empresa parceira." },
+];
 
+const benefits = [
+  "Fórmula pronta para licenciamento e personalização pela empresa parceira",
+  "Composição diferenciada com suporte científico*",
+  "Potencial de posicionamento premium e alto LTV",
+  "Exclusividade negociável por região/linha de produto",
+];
+
+const ingredients = [
+  { name: "Tremella (Tremella fuciformis)", note: "Polissacarídeos associados à hidratação e elasticidade da pele*" },
+  { name: "NMN (Nicotinamida Mononucleotídeo)", note: "Precursor de NAD+ para suporte metabólico celular*" },
+  { name: "Chaga (Inonotus obliquus)", note: "Betaglucanos e polifenóis com ação antioxidante*" },
+  { name: "Fisetina", note: "Flavonóide estudado em protocolos de longevidade*" },
+  { name: "Espermidina", note: "Composto associado a processos autofágicos*" },
+];
+
+export default function Home() {
   return (
-    <div className="min-h-screen">
-      {/* Navbar */}
-      <header className="sticky top-0 z-30 backdrop-blur bg-black/20 border-b border-white/10">
-        <div className="container h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <FlaskConical className="w-6 h-6" />
-            <span className="font-semibold tracking-wide">{t.brand}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button className="btn btn-secondary" onClick={() => setLang(lang==='en'?'pt':'en')}>
-              <Globe2 className="w-4 h-4" /> {lang==='en' ? 'PT' : 'EN'}
-            </button>
-            <a className="btn" href="mailto:larissa.guimaraes@cellunovaresearch.com">
-              <Mail className="w-4 h-4" /> {t.cta_secondary}
-            </a>
-          </div>
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+      {/* HERO MARKETING (Propaganda Albert) */}
+      <section id="hero" className="relative pt-24 pb-8 overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-slate-300/80">
+              <PackageCheck className="size-4" /> Disponível para licenciamento
+            </span>
+            <h1 className="mt-3 text-4xl sm:text-5xl font-semibold leading-tight">
+              CelluNOVA <span className="text-fuchsia-400">DermoRebirth™</span>
+            </h1>
+            <p className="mt-4 text-slate-300/90 text-lg max-w-xl">
+              Bioactive Rejuvenation Formula com Tremella, NMN, Chaga, Fisetina e Espermidina —
+              pronta para integrar seu portfólio sob licenciamento B2B.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="rounded-2xl px-6">
+                <Link href="#parceria">Solicitar parceria</Link>
+              </Button>
+              <Button asChild variant="secondary" size="lg" className="rounded-2xl px-6">
+                <Link href="#comparativo">Ver comparativo</Link>
+              </Button>
+            </div>
+            <div className="mt-6 flex items-center gap-3 text-sm text-slate-300/80">
+              <Star className="size-4" /> Exclusividade negociável
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="relative">
+            <Image
+              src="/images/propaganda-albert.png"
+              alt="Campanha de marketing DermoRebirth™"
+              width={900}
+              height={900}
+              className="w-full h-auto rounded-2xl border border-white/10 shadow-2xl"
+              priority
+            />
+          </motion.div>
         </div>
-      </header>
+      </section>
 
-     {/* Hero com imagem à direita */}
-<section className="relative overflow-hidden">
-  <div className="container py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
-    {/* Lado esquerdo: texto e CTAs */}
-    <div>
-      <motion.h1
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-4xl md:text-6xl font-bold leading-tight"
-      >
-        {t.brand}
-      </motion.h1>
-
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.1 }}
-        className="mt-4 text-lg md:text-2xl text-white/90 max-w-3xl"
-      >
-        {t.tagline}
-      </motion.p>
-
-      <div className="mt-8 flex flex-wrap gap-3">
-        <a className="btn btn-primary" href="mailto:larissa.guimaraes@cellunovaresearch.com?subject=NDA%20Request%20—%20CelluNOVA%20Research">
-          <FileSignature className="w-4 h-4" /> {t.cta_primary}
-        </a>
-        <a className="btn btn-secondary" href="mailto:larissa.guimaraes@cellunovaresearch.com">
-          <Mail className="w-4 h-4" /> {t.cta_secondary}
-        </a>
-      </div>
-    </div>
-
-    {/* Lado direito: imagem */}
-    <div className="relative w-full aspect-[4/5] md:aspect-[5/6] rounded-2xl overflow-hidden border border-white/10 shadow-xl">
-      <Image
-        src="/hero-cellunova.jpg"   // arquivo que você subiu em /public
-        alt="CelluNOVA — Genius is eternal. Now, youth is too."
-        fill
-        className="object-cover"
-        priority
-      />
-    </div>
-  </div>
-
-  {/* Glow decorativo (opcional) */}
-  <div className="absolute -bottom-24 -right-24 w-[36rem] h-[36rem] rounded-full bg-white/10 blur-3xl" />
-</section>
-
-      {/* Value Props */}
-      <section className="py-12">
-        <div className="container grid md:grid-cols-3 gap-6">
-          {t.sections.value.points.map((p: any, i: number) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
-              <div className="card p-5">
-                <div className="flex items-center gap-2 text-white mb-2">
-                  <span className="badge"><Icon name={p.icon as any} /></span>
-                  <span className="font-semibold">{p.title}</span>
-                </div>
-                <p className="text-white/80">{p.text}</p>
+      {/* STRIP DE PROVAS */}
+      <section className="py-6 border-y border-white/5 bg-black/20 backdrop-blur">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6">
+          {features.map((f, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <f.icon className="size-5 mt-0.5 text-fuchsia-300" />
+              <div>
+                <p className="text-sm font-medium">{f.title}</p>
+                <p className="text-xs text-slate-300/80">{f.text}</p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Technology */}
-      <section className="py-12">
-        <div className="container">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6">{t.sections.tech.title}</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {t.sections.tech.bullets.map((b: string, i: number) => (
-              <div key={i} className="card p-4"><p className="text-white/85">• {b}</p></div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Market */}
-      <section className="py-12">
-        <div className="container">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-2">{t.sections.market.title}</h2>
-          <p className="text-white/85 mb-6 max-w-3xl">{t.sections.market.lead}</p>
-          <div className="grid md:grid-cols-3 gap-4">
-            {t.sections.market.bullets.map((b: string, i: number) => (
-              <div key={i} className="card p-4"><p className="text-white/85">• {b}</p></div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Licensing */}
-      <section className="py-12">
-        <div className="container">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6">{t.sections.licensing.title}</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {t.sections.licensing.items.map((b: string, i: number) => (
-              <div key={i} className="card p-4"><p className="text-white/85">• {b}</p></div>
-            ))}
-          </div>
-          <div className="mt-8">
-            <a className="btn btn-primary" href="mailto:larissa.guimaraes@cellunovaresearch.com?subject=NDA%20Request%20—%20CelluNOVA%20Research">
-              <FileSignature className="w-4 h-4" /> {t.cta_primary}
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact */}
-      <footer className="py-12 border-t border-white/10 bg-black/20">
-        <div className="container grid md:grid-cols-2 gap-6 items-center">
+      {/* BENEFÍCIOS + FOTO DO PRODUTO PILOTO */}
+      <section id="beneficios" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <h3 className="text-xl font-semibold mb-2">{t.sections.contact.title}</h3>
-            <p className="text-white/85 mb-4">{t.sections.contact.text}</p>
-            <a className="inline-flex items-center gap-2 underline" href="mailto:larissa.guimaraes@cellunovaresearch.com">
-              <Mail className="w-4 h-4" /> {t.sections.contact.email_label}: larissa.guimaraes@cellunovaresearch.com
-            </a>
+            <h2 className="text-3xl font-semibold">Oportunidade de Parceria</h2>
+            <p className="mt-3 text-slate-300/90 max-w-prose">
+              Licencie o DermoRebirth™ e ofereça ao mercado um produto exclusivo, com formulação respaldada por evidências e alto valor agregado. Produto (piloto) abaixo é referência do design e embalagem final a ser oferecida.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {benefits.map((b, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="size-5 mt-0.5 text-fuchsia-300" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="text-white/70 text-sm md:text-right">
-            <p>{t.footer.address}</p>
-            <p>© {new Date().getFullYear()} {COPY.en.brand}. {t.footer.rights}.</p>
+
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader>
+              <CardTitle className="text-xl">Produto (piloto)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Image
+                src="/images/produto-piloto.png"
+                alt="Frasco piloto CelluNOVA DermoRebirth™"
+                width={720}
+                height={720}
+                className="w-full h-auto rounded-xl border border-white/10"
+              />
+              <div className="space-y-3">
+                {ingredients.map((ing, i) => (
+                  <div key={i} className="p-3 rounded-xl bg-black/30 border border-white/10">
+                    <p className="font-medium">{ing.name}</p>
+                    <p className="text-sm text-slate-300/80">{ing.note}</p>
+                  </div>
+                ))}
+                <p className="text-xs text-slate-400 pt-1">
+                  *As descrições referem-se a propriedades e literatura do(s) ingrediente(s). Consulte documentação técnica para detalhes.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* BASE CIENTÍFICA */}
+      <section id="ciencia" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2">
+              <h2 className="text-3xl font-semibold">Base científica</h2>
+              <p className="mt-3 text-slate-300/90 max-w-prose">
+                Mantemos um dossiê de referências para cada ingrediente do blend, com foco em protocolos, segurança de uso e sinergias potenciais em adultos saudáveis. Resumos técnicos disponíveis mediante solicitação.
+              </p>
+              <div className="mt-6 grid sm:grid-cols-2 gap-4">
+                {["Tremella e hidratação cutânea", "NMN e metabolismo celular", "Chaga e polifenóis antioxidantes", "Fisetina e estudos de longevidade", "Espermidina e processos autofágicos"].map((t, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                    <Beaker className="size-5 mt-0.5 text-fuchsia-300" />
+                    <div>
+                      <p className="font-medium">{t}</p>
+                      <p className="text-sm text-slate-300/80">Resumo técnico disponível mediante solicitação.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Transparência & Segurança</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>Lote rastreável e fornecedores com controle de qualidade.</p>
+                <p>Boas Práticas de Fabricação (BPF/GMP) no processo do parceiro fabricante.</p>
+                <p>Rótulo claro, sem promessas médicas. Indicado para maiores de 19 anos.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* COMPARATIVO DE MERCADO */}
+      <section id="comparativo" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Comparativo de mercado (ingredientes & posicionamento)</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Abaixo, uma base comparativa lógica focada nos ingredientes principais e no posicionamento de mercado. Não se trata de equivalência clínica; usamos dados públicos e documentação de cada marca para comparação de proposta e composição.
+          </p>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full text-left text-sm border-separate border-spacing-y-2">
+              <thead className="text-slate-300/80">
+                <tr>
+                  <th className="py-2">Marca / Produto</th>
+                  <th className="py-2">Core da fórmula</th>
+                  <th className="py-2">Ângulo de claims</th>
+                  <th className="py-2">Modelo</th>
+                  <th className="py-2">Referências públicas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">CelluNOVA DermoRebirth™</td>
+                  <td className="p-3">Tremella + NMN + Chaga + Fisetina + Espermidina</td>
+                  <td className="p-3">Renovação celular, antioxidante, pele/vitalidade*</td>
+                  <td className="p-3">Licenciamento B2B; exclusividade opcional</td>
+                  <td className="p-3 text-fuchsia-200">Dossiê técnico sob NDA</td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">Elysium Health – Basis</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) + Pterostilbene</td>
+                  <td className="p-3">Suporte a NAD+ e envelhecimento celular*</td>
+                  <td className="p-3">B2C premium (assinatura)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/products/basis" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Site oficial</Link>
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/pages/basis-supplement-facts" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Fórmula pública</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">ChromaDex – Tru Niagen (portfólio NR)</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) como ativo principal</td>
+                  <td className="p-3">Apoio a NAD+ e metabolismo celular*</td>
+                  <td className="p-3">B2C global; ingrediente B2B (Niagen®)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://companiesmarketcap.com/chromadex/revenue/" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Receita 2024</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">NOVOS (linhas longevity)
+                  </td>
+                  <td className="p-3">Combinações pró-longevidade (varia por SKU)</td>
+                  <td className="p-3">Healthy aging e performance*</td>
+                  <td className="p-3">B2C digital-first</td>
+                  <td className="p-3"><span className="text-slate-300/80">Dados públicos limitados</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* PROJEÇÕES */}
+          <div className="mt-10 grid lg:grid-cols-2 gap-6">
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Tamanho de mercado & contexto</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  O mercado global de suplementos anti-idade é estimado entre US$4.5–4.9 bi em 2024/2025, com CAGR ~8% até 2030–2034.
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-300/80">
+                  <li>Fonte (estimativa): Grand View Research 2024 e Precedence Research 2025.</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Cenário de alcance para parceiros (ilustrativo)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  Considerando um parceiro com distribuição nacional capturando 0,05% do mercado global projetado para 2025 (~US$4,88 bi), o volume anual potencial seria ~US$2,44 mi em sell-out. Em 0,1%: ~US$4,88 mi. *Valores ilustrativos; validar com seu canal e mix de SKUs.*
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <p className="mt-6 text-xs text-slate-400">*As menções a benefícios referem-se a literatura de ingredientes. Não se trata de alegações medicinais.</p>
+        </div>
+      </section>
+
+      {/* PARCERIA */}
+      <section id="parceria" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Modelos de Licenciamento</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Trabalhamos com modelos flexíveis de licenciamento, incluindo exclusividade por setor, região ou canal de distribuição, suporte de dossiê técnico, referências científicas e orientação de rotulagem/posicionamento.
+          </p>
+          <div className="mt-6 flex gap-3">
+            <Button size="lg" className="rounded-2xl"><Link href="/contato">Falar com nosso time</Link></Button>
+            <Button size="lg" variant="secondary" className="rounded-2xl"><Link href="#ciencia">Ver ciência</Link></Button>
+          </div>
+        </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section className="py-16">
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <h3 className="text-2xl font-semibold">Novidades da CelluNOVA</h3>
+          <p className="mt-2 text-slate-300/90">Entre para a lista de parceiros e receba materiais técnicos e oportunidades de licenciamento.</p>
+          <form className="mt-6 flex gap-3 justify-center">
+            <Input type="email" placeholder="Seu e-mail corporativo" className="max-w-sm rounded-2xl" />
+            <Button type="submit" className="rounded-2xl">Quero receber</Button>
+          </form>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-10 border-t border-white/10 text-sm text-slate-400">
+        <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} CelluNOVA LTDA. Todos os direitos reservados.</p>
+          <div className="flex gap-6">
+            <Link href="/politica-privacidade">Política de Privacidade</Link>
+            <Link href="/contato">Contato</Link>
           </div>
         </div>
       </footer>
-    </div>
+
+      {/* Structured Data (JSON-LD) para Serviço de Licenciamento */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Licenciamento do blend DermoRebirth™',
+            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA' },
+            serviceType: 'Licensing',
+            areaServed: ['BR', 'US', 'EU'],
+            description: 'Licenciamento B2B do blend nutracêutico DermoRebirth™. Não vendemos ao consumidor final.'
+          }),
+        }}
+      />
+    </main>
+  );
+}
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { FlaskConical, ShieldCheck, Leaf, Clock, CheckCircle2, Star, Microscope, Beaker, PackageCheck, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
+export const metadata = {
+  title: "CelluNOVA DermoRebirth™ | Licenciamento de Blend – Bioactive Rejuvenation Formula",
+  description:
+    "DermoRebirth™ é o blend premium da CelluNOVA com Tremella, NMN, Chaga, Fisetina e Espermidina. Fórmula bioativa disponível para licenciamento B2B a empresas parceiras.",
+  openGraph: {
+    title: "CelluNOVA DermoRebirth™",
+    description:
+      "Blend premium com Tremella, NMN, Chaga, Fisetina e Espermidina. Disponível para licenciamento empresarial.",
+    url: "https://www.cellunovaresearch.com/",
+    siteName: "CelluNOVA Research",
+    images: [
+      {
+        url: "/images/propaganda-albert.png",
+        width: 1200,
+        height: 630,
+        alt: "Campanha CelluNOVA DermoRebirth™ — Genius is eternal. Now, youth is too.",
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+};
+
+const features = [
+  { icon: ShieldCheck, title: "Qualidade Premium", text: "Matérias-primas selecionadas e lote rastreável." },
+  { icon: FlaskConical, title: "Baseado em Evidências", text: "Blend desenvolvido com literatura científica de referência.*" },
+  { icon: Leaf, title: "Clean Label", text: "Sem corantes artificiais. Sem glúten." },
+  { icon: Clock, title: "Pronto para Licenciamento", text: "Integração ágil no portfólio da empresa parceira." },
+];
+
+const benefits = [
+  "Fórmula pronta para licenciamento e personalização pela empresa parceira",
+  "Composição diferenciada com suporte científico*",
+  "Potencial de posicionamento premium e alto LTV",
+  "Exclusividade negociável por região/linha de produto",
+];
+
+const ingredients = [
+  { name: "Tremella (Tremella fuciformis)", note: "Polissacarídeos associados à hidratação e elasticidade da pele*" },
+  { name: "NMN (Nicotinamida Mononucleotídeo)", note: "Precursor de NAD+ para suporte metabólico celular*" },
+  { name: "Chaga (Inonotus obliquus)", note: "Betaglucanos e polifenóis com ação antioxidante*" },
+  { name: "Fisetina", note: "Flavonóide estudado em protocolos de longevidade*" },
+  { name: "Espermidina", note: "Composto associado a processos autofágicos*" },
+];
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+      {/* HERO MARKETING (Propaganda Albert) */}
+      <section id="hero" className="relative pt-24 pb-8 overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-slate-300/80">
+              <PackageCheck className="size-4" /> Disponível para licenciamento
+            </span>
+            <h1 className="mt-3 text-4xl sm:text-5xl font-semibold leading-tight">
+              CelluNOVA <span className="text-fuchsia-400">DermoRebirth™</span>
+            </h1>
+            <p className="mt-4 text-slate-300/90 text-lg max-w-xl">
+              Bioactive Rejuvenation Formula com Tremella, NMN, Chaga, Fisetina e Espermidina —
+              pronta para integrar seu portfólio sob licenciamento B2B.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="rounded-2xl px-6">
+                <Link href="#parceria">Solicitar parceria</Link>
+              </Button>
+              <Button asChild variant="secondary" size="lg" className="rounded-2xl px-6">
+                <Link href="#comparativo">Ver comparativo</Link>
+              </Button>
+            </div>
+            <div className="mt-6 flex items-center gap-3 text-sm text-slate-300/80">
+              <Star className="size-4" /> Exclusividade negociável
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="relative">
+            <Image
+              src="/images/propaganda-albert.png"
+              alt="Campanha de marketing DermoRebirth™"
+              width={900}
+              height={900}
+              className="w-full h-auto rounded-2xl border border-white/10 shadow-2xl"
+              priority
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* STRIP DE PROVAS */}
+      <section className="py-6 border-y border-white/5 bg-black/20 backdrop-blur">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6">
+          {features.map((f, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <f.icon className="size-5 mt-0.5 text-fuchsia-300" />
+              <div>
+                <p className="text-sm font-medium">{f.title}</p>
+                <p className="text-xs text-slate-300/80">{f.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* BENEFÍCIOS + FOTO DO PRODUTO PILOTO */}
+      <section id="beneficios" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-3xl font-semibold">Oportunidade de Parceria</h2>
+            <p className="mt-3 text-slate-300/90 max-w-prose">
+              Licencie o DermoRebirth™ e ofereça ao mercado um produto exclusivo, com formulação respaldada por evidências e alto valor agregado. Produto (piloto) abaixo é referência do design e embalagem final a ser oferecida.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {benefits.map((b, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="size-5 mt-0.5 text-fuchsia-300" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader>
+              <CardTitle className="text-xl">Produto (piloto)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Image
+                src="/images/produto-piloto.png"
+                alt="Frasco piloto CelluNOVA DermoRebirth™"
+                width={720}
+                height={720}
+                className="w-full h-auto rounded-xl border border-white/10"
+              />
+              <div className="space-y-3">
+                {ingredients.map((ing, i) => (
+                  <div key={i} className="p-3 rounded-xl bg-black/30 border border-white/10">
+                    <p className="font-medium">{ing.name}</p>
+                    <p className="text-sm text-slate-300/80">{ing.note}</p>
+                  </div>
+                ))}
+                <p className="text-xs text-slate-400 pt-1">
+                  *As descrições referem-se a propriedades e literatura do(s) ingrediente(s). Consulte documentação técnica para detalhes.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* BASE CIENTÍFICA */}
+      <section id="ciencia" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2">
+              <h2 className="text-3xl font-semibold">Base científica</h2>
+              <p className="mt-3 text-slate-300/90 max-w-prose">
+                Mantemos um dossiê de referências para cada ingrediente do blend, com foco em protocolos, segurança de uso e sinergias potenciais em adultos saudáveis. Resumos técnicos disponíveis mediante solicitação.
+              </p>
+              <div className="mt-6 grid sm:grid-cols-2 gap-4">
+                {["Tremella e hidratação cutânea", "NMN e metabolismo celular", "Chaga e polifenóis antioxidantes", "Fisetina e estudos de longevidade", "Espermidina e processos autofágicos"].map((t, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                    <Beaker className="size-5 mt-0.5 text-fuchsia-300" />
+                    <div>
+                      <p className="font-medium">{t}</p>
+                      <p className="text-sm text-slate-300/80">Resumo técnico disponível mediante solicitação.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Transparência & Segurança</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>Lote rastreável e fornecedores com controle de qualidade.</p>
+                <p>Boas Práticas de Fabricação (BPF/GMP) no processo do parceiro fabricante.</p>
+                <p>Rótulo claro, sem promessas médicas. Indicado para maiores de 19 anos.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* COMPARATIVO DE MERCADO */}
+      <section id="comparativo" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Comparativo de mercado (ingredientes & posicionamento)</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Abaixo, uma base comparativa lógica focada nos ingredientes principais e no posicionamento de mercado. Não se trata de equivalência clínica; usamos dados públicos e documentação de cada marca para comparação de proposta e composição.
+          </p>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full text-left text-sm border-separate border-spacing-y-2">
+              <thead className="text-slate-300/80">
+                <tr>
+                  <th className="py-2">Marca / Produto</th>
+                  <th className="py-2">Core da fórmula</th>
+                  <th className="py-2">Ângulo de claims</th>
+                  <th className="py-2">Modelo</th>
+                  <th className="py-2">Referências públicas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">CelluNOVA DermoRebirth™</td>
+                  <td className="p-3">Tremella + NMN + Chaga + Fisetina + Espermidina</td>
+                  <td className="p-3">Renovação celular, antioxidante, pele/vitalidade*</td>
+                  <td className="p-3">Licenciamento B2B; exclusividade opcional</td>
+                  <td className="p-3 text-fuchsia-200">Dossiê técnico sob NDA</td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">Elysium Health – Basis</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) + Pterostilbene</td>
+                  <td className="p-3">Suporte a NAD+ e envelhecimento celular*</td>
+                  <td className="p-3">B2C premium (assinatura)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/products/basis" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Site oficial</Link>
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/pages/basis-supplement-facts" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Fórmula pública</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">ChromaDex – Tru Niagen (portfólio NR)</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) como ativo principal</td>
+                  <td className="p-3">Apoio a NAD+ e metabolismo celular*</td>
+                  <td className="p-3">B2C global; ingrediente B2B (Niagen®)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://companiesmarketcap.com/chromadex/revenue/" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Receita 2024</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">NOVOS (linhas longevity)
+                  </td>
+                  <td className="p-3">Combinações pró-longevidade (varia por SKU)</td>
+                  <td className="p-3">Healthy aging e performance*</td>
+                  <td className="p-3">B2C digital-first</td>
+                  <td className="p-3"><span className="text-slate-300/80">Dados públicos limitados</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* PROJEÇÕES */}
+          <div className="mt-10 grid lg:grid-cols-2 gap-6">
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Tamanho de mercado & contexto</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  O mercado global de suplementos anti-idade é estimado entre US$4.5–4.9 bi em 2024/2025, com CAGR ~8% até 2030–2034.
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-300/80">
+                  <li>Fonte (estimativa): Grand View Research 2024 e Precedence Research 2025.</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Cenário de alcance para parceiros (ilustrativo)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  Considerando um parceiro com distribuição nacional capturando 0,05% do mercado global projetado para 2025 (~US$4,88 bi), o volume anual potencial seria ~US$2,44 mi em sell-out. Em 0,1%: ~US$4,88 mi. *Valores ilustrativos; validar com seu canal e mix de SKUs.*
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <p className="mt-6 text-xs text-slate-400">*As menções a benefícios referem-se a literatura de ingredientes. Não se trata de alegações medicinais.</p>
+        </div>
+      </section>
+
+      {/* PARCERIA */}
+      <section id="parceria" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Modelos de Licenciamento</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Trabalhamos com modelos flexíveis de licenciamento, incluindo exclusividade por setor, região ou canal de distribuição, suporte de dossiê técnico, referências científicas e orientação de rotulagem/posicionamento.
+          </p>
+          <div className="mt-6 flex gap-3">
+            <Button size="lg" className="rounded-2xl"><Link href="/contato">Falar com nosso time</Link></Button>
+            <Button size="lg" variant="secondary" className="rounded-2xl"><Link href="#ciencia">Ver ciência</Link></Button>
+          </div>
+        </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section className="py-16">
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <h3 className="text-2xl font-semibold">Novidades da CelluNOVA</h3>
+          <p className="mt-2 text-slate-300/90">Entre para a lista de parceiros e receba materiais técnicos e oportunidades de licenciamento.</p>
+          <form className="mt-6 flex gap-3 justify-center">
+            <Input type="email" placeholder="Seu e-mail corporativo" className="max-w-sm rounded-2xl" />
+            <Button type="submit" className="rounded-2xl">Quero receber</Button>
+          </form>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-10 border-t border-white/10 text-sm text-slate-400">
+        <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} CelluNOVA LTDA. Todos os direitos reservados.</p>
+          <div className="flex gap-6">
+            <Link href="/politica-privacidade">Política de Privacidade</Link>
+            <Link href="/contato">Contato</Link>
+          </div>
+        </div>
+      </footer>
+
+      {/* Structured Data (JSON-LD) para Serviço de Licenciamento */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Licenciamento do blend DermoRebirth™',
+            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA' },
+            serviceType: 'Licensing',
+            areaServed: ['BR', 'US', 'EU'],
+            description: 'Licenciamento B2B do blend nutracêutico DermoRebirth™. Não vendemos ao consumidor final.'
+          }),
+        }}
+      />
+    </main>
+  );
+}
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { FlaskConical, ShieldCheck, Leaf, Clock, CheckCircle2, Star, Microscope, Beaker, PackageCheck, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
+export const metadata = {
+  title: "CelluNOVA DermoRebirth™ | Licenciamento de Blend – Bioactive Rejuvenation Formula",
+  description:
+    "DermoRebirth™ é o blend premium da CelluNOVA com Tremella, NMN, Chaga, Fisetina e Espermidina. Fórmula bioativa disponível para licenciamento B2B a empresas parceiras.",
+  openGraph: {
+    title: "CelluNOVA DermoRebirth™",
+    description:
+      "Blend premium com Tremella, NMN, Chaga, Fisetina e Espermidina. Disponível para licenciamento empresarial.",
+    url: "https://www.cellunovaresearch.com/",
+    siteName: "CelluNOVA Research",
+    images: [
+      {
+        url: "/images/propaganda-albert.png",
+        width: 1200,
+        height: 630,
+        alt: "Campanha CelluNOVA DermoRebirth™ — Genius is eternal. Now, youth is too.",
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+};
+
+const features = [
+  { icon: ShieldCheck, title: "Qualidade Premium", text: "Matérias-primas selecionadas e lote rastreável." },
+  { icon: FlaskConical, title: "Baseado em Evidências", text: "Blend desenvolvido com literatura científica de referência.*" },
+  { icon: Leaf, title: "Clean Label", text: "Sem corantes artificiais. Sem glúten." },
+  { icon: Clock, title: "Pronto para Licenciamento", text: "Integração ágil no portfólio da empresa parceira." },
+];
+
+const benefits = [
+  "Fórmula pronta para licenciamento e personalização pela empresa parceira",
+  "Composição diferenciada com suporte científico*",
+  "Potencial de posicionamento premium e alto LTV",
+  "Exclusividade negociável por região/linha de produto",
+];
+
+const ingredients = [
+  { name: "Tremella (Tremella fuciformis)", note: "Polissacarídeos associados à hidratação e elasticidade da pele*" },
+  { name: "NMN (Nicotinamida Mononucleotídeo)", note: "Precursor de NAD+ para suporte metabólico celular*" },
+  { name: "Chaga (Inonotus obliquus)", note: "Betaglucanos e polifenóis com ação antioxidante*" },
+  { name: "Fisetina", note: "Flavonóide estudado em protocolos de longevidade*" },
+  { name: "Espermidina", note: "Composto associado a processos autofágicos*" },
+];
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+      {/* HERO MARKETING (Propaganda Albert) */}
+      <section id="hero" className="relative pt-24 pb-8 overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-slate-300/80">
+              <PackageCheck className="size-4" /> Disponível para licenciamento
+            </span>
+            <h1 className="mt-3 text-4xl sm:text-5xl font-semibold leading-tight">
+              CelluNOVA <span className="text-fuchsia-400">DermoRebirth™</span>
+            </h1>
+            <p className="mt-4 text-slate-300/90 text-lg max-w-xl">
+              Bioactive Rejuvenation Formula com Tremella, NMN, Chaga, Fisetina e Espermidina —
+              pronta para integrar seu portfólio sob licenciamento B2B.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="rounded-2xl px-6">
+                <Link href="#parceria">Solicitar parceria</Link>
+              </Button>
+              <Button asChild variant="secondary" size="lg" className="rounded-2xl px-6">
+                <Link href="#comparativo">Ver comparativo</Link>
+              </Button>
+            </div>
+            <div className="mt-6 flex items-center gap-3 text-sm text-slate-300/80">
+              <Star className="size-4" /> Exclusividade negociável
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="relative">
+            <Image
+              src="/images/propaganda-albert.png"
+              alt="Campanha de marketing DermoRebirth™"
+              width={900}
+              height={900}
+              className="w-full h-auto rounded-2xl border border-white/10 shadow-2xl"
+              priority
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* STRIP DE PROVAS */}
+      <section className="py-6 border-y border-white/5 bg-black/20 backdrop-blur">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6">
+          {features.map((f, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <f.icon className="size-5 mt-0.5 text-fuchsia-300" />
+              <div>
+                <p className="text-sm font-medium">{f.title}</p>
+                <p className="text-xs text-slate-300/80">{f.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* BENEFÍCIOS + FOTO DO PRODUTO PILOTO */}
+      <section id="beneficios" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-3xl font-semibold">Oportunidade de Parceria</h2>
+            <p className="mt-3 text-slate-300/90 max-w-prose">
+              Licencie o DermoRebirth™ e ofereça ao mercado um produto exclusivo, com formulação respaldada por evidências e alto valor agregado. Produto (piloto) abaixo é referência do design e embalagem final a ser oferecida.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {benefits.map((b, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="size-5 mt-0.5 text-fuchsia-300" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader>
+              <CardTitle className="text-xl">Produto (piloto)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Image
+                src="/images/produto-piloto.png"
+                alt="Frasco piloto CelluNOVA DermoRebirth™"
+                width={720}
+                height={720}
+                className="w-full h-auto rounded-xl border border-white/10"
+              />
+              <div className="space-y-3">
+                {ingredients.map((ing, i) => (
+                  <div key={i} className="p-3 rounded-xl bg-black/30 border border-white/10">
+                    <p className="font-medium">{ing.name}</p>
+                    <p className="text-sm text-slate-300/80">{ing.note}</p>
+                  </div>
+                ))}
+                <p className="text-xs text-slate-400 pt-1">
+                  *As descrições referem-se a propriedades e literatura do(s) ingrediente(s). Consulte documentação técnica para detalhes.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* BASE CIENTÍFICA */}
+      <section id="ciencia" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2">
+              <h2 className="text-3xl font-semibold">Base científica</h2>
+              <p className="mt-3 text-slate-300/90 max-w-prose">
+                Mantemos um dossiê de referências para cada ingrediente do blend, com foco em protocolos, segurança de uso e sinergias potenciais em adultos saudáveis. Resumos técnicos disponíveis mediante solicitação.
+              </p>
+              <div className="mt-6 grid sm:grid-cols-2 gap-4">
+                {["Tremella e hidratação cutânea", "NMN e metabolismo celular", "Chaga e polifenóis antioxidantes", "Fisetina e estudos de longevidade", "Espermidina e processos autofágicos"].map((t, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                    <Beaker className="size-5 mt-0.5 text-fuchsia-300" />
+                    <div>
+                      <p className="font-medium">{t}</p>
+                      <p className="text-sm text-slate-300/80">Resumo técnico disponível mediante solicitação.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Transparência & Segurança</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>Lote rastreável e fornecedores com controle de qualidade.</p>
+                <p>Boas Práticas de Fabricação (BPF/GMP) no processo do parceiro fabricante.</p>
+                <p>Rótulo claro, sem promessas médicas. Indicado para maiores de 19 anos.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* COMPARATIVO DE MERCADO */}
+      <section id="comparativo" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Comparativo de mercado (ingredientes & posicionamento)</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Abaixo, uma base comparativa lógica focada nos ingredientes principais e no posicionamento de mercado. Não se trata de equivalência clínica; usamos dados públicos e documentação de cada marca para comparação de proposta e composição.
+          </p>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full text-left text-sm border-separate border-spacing-y-2">
+              <thead className="text-slate-300/80">
+                <tr>
+                  <th className="py-2">Marca / Produto</th>
+                  <th className="py-2">Core da fórmula</th>
+                  <th className="py-2">Ângulo de claims</th>
+                  <th className="py-2">Modelo</th>
+                  <th className="py-2">Referências públicas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">CelluNOVA DermoRebirth™</td>
+                  <td className="p-3">Tremella + NMN + Chaga + Fisetina + Espermidina</td>
+                  <td className="p-3">Renovação celular, antioxidante, pele/vitalidade*</td>
+                  <td className="p-3">Licenciamento B2B; exclusividade opcional</td>
+                  <td className="p-3 text-fuchsia-200">Dossiê técnico sob NDA</td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">Elysium Health – Basis</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) + Pterostilbene</td>
+                  <td className="p-3">Suporte a NAD+ e envelhecimento celular*</td>
+                  <td className="p-3">B2C premium (assinatura)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/products/basis" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Site oficial</Link>
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/pages/basis-supplement-facts" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Fórmula pública</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">ChromaDex – Tru Niagen (portfólio NR)</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) como ativo principal</td>
+                  <td className="p-3">Apoio a NAD+ e metabolismo celular*</td>
+                  <td className="p-3">B2C global; ingrediente B2B (Niagen®)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://companiesmarketcap.com/chromadex/revenue/" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Receita 2024</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">NOVOS (linhas longevity)
+                  </td>
+                  <td className="p-3">Combinações pró-longevidade (varia por SKU)</td>
+                  <td className="p-3">Healthy aging e performance*</td>
+                  <td className="p-3">B2C digital-first</td>
+                  <td className="p-3"><span className="text-slate-300/80">Dados públicos limitados</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* PROJEÇÕES */}
+          <div className="mt-10 grid lg:grid-cols-2 gap-6">
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Tamanho de mercado & contexto</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  O mercado global de suplementos anti-idade é estimado entre US$4.5–4.9 bi em 2024/2025, com CAGR ~8% até 2030–2034.
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-300/80">
+                  <li>Fonte (estimativa): Grand View Research 2024 e Precedence Research 2025.</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Cenário de alcance para parceiros (ilustrativo)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  Considerando um parceiro com distribuição nacional capturando 0,05% do mercado global projetado para 2025 (~US$4,88 bi), o volume anual potencial seria ~US$2,44 mi em sell-out. Em 0,1%: ~US$4,88 mi. *Valores ilustrativos; validar com seu canal e mix de SKUs.*
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <p className="mt-6 text-xs text-slate-400">*As menções a benefícios referem-se a literatura de ingredientes. Não se trata de alegações medicinais.</p>
+        </div>
+      </section>
+
+      {/* PARCERIA */}
+      <section id="parceria" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Modelos de Licenciamento</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Trabalhamos com modelos flexíveis de licenciamento, incluindo exclusividade por setor, região ou canal de distribuição, suporte de dossiê técnico, referências científicas e orientação de rotulagem/posicionamento.
+          </p>
+          <div className="mt-6 flex gap-3">
+            <Button size="lg" className="rounded-2xl"><Link href="/contato">Falar com nosso time</Link></Button>
+            <Button size="lg" variant="secondary" className="rounded-2xl"><Link href="#ciencia">Ver ciência</Link></Button>
+          </div>
+        </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section className="py-16">
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <h3 className="text-2xl font-semibold">Novidades da CelluNOVA</h3>
+          <p className="mt-2 text-slate-300/90">Entre para a lista de parceiros e receba materiais técnicos e oportunidades de licenciamento.</p>
+          <form className="mt-6 flex gap-3 justify-center">
+            <Input type="email" placeholder="Seu e-mail corporativo" className="max-w-sm rounded-2xl" />
+            <Button type="submit" className="rounded-2xl">Quero receber</Button>
+          </form>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-10 border-t border-white/10 text-sm text-slate-400">
+        <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} CelluNOVA LTDA. Todos os direitos reservados.</p>
+          <div className="flex gap-6">
+            <Link href="/politica-privacidade">Política de Privacidade</Link>
+            <Link href="/contato">Contato</Link>
+          </div>
+        </div>
+      </footer>
+
+      {/* Structured Data (JSON-LD) para Serviço de Licenciamento */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Licenciamento do blend DermoRebirth™',
+            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA' },
+            serviceType: 'Licensing',
+            areaServed: ['BR', 'US', 'EU'],
+            description: 'Licenciamento B2B do blend nutracêutico DermoRebirth™. Não vendemos ao consumidor final.'
+          }),
+        }}
+      />
+    </main>
+  );
+}
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { FlaskConical, ShieldCheck, Leaf, Clock, CheckCircle2, Star, Microscope, Beaker, PackageCheck, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
+export const metadata = {
+  title: "CelluNOVA DermoRebirth™ | Licenciamento de Blend – Bioactive Rejuvenation Formula",
+  description:
+    "DermoRebirth™ é o blend premium da CelluNOVA com Tremella, NMN, Chaga, Fisetina e Espermidina. Fórmula bioativa disponível para licenciamento B2B a empresas parceiras.",
+  openGraph: {
+    title: "CelluNOVA DermoRebirth™",
+    description:
+      "Blend premium com Tremella, NMN, Chaga, Fisetina e Espermidina. Disponível para licenciamento empresarial.",
+    url: "https://www.cellunovaresearch.com/",
+    siteName: "CelluNOVA Research",
+    images: [
+      {
+        url: "/images/propaganda-albert.png",
+        width: 1200,
+        height: 630,
+        alt: "Campanha CelluNOVA DermoRebirth™ — Genius is eternal. Now, youth is too.",
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+};
+
+const features = [
+  { icon: ShieldCheck, title: "Qualidade Premium", text: "Matérias-primas selecionadas e lote rastreável." },
+  { icon: FlaskConical, title: "Baseado em Evidências", text: "Blend desenvolvido com literatura científica de referência.*" },
+  { icon: Leaf, title: "Clean Label", text: "Sem corantes artificiais. Sem glúten." },
+  { icon: Clock, title: "Pronto para Licenciamento", text: "Integração ágil no portfólio da empresa parceira." },
+];
+
+const benefits = [
+  "Fórmula pronta para licenciamento e personalização pela empresa parceira",
+  "Composição diferenciada com suporte científico*",
+  "Potencial de posicionamento premium e alto LTV",
+  "Exclusividade negociável por região/linha de produto",
+];
+
+const ingredients = [
+  { name: "Tremella (Tremella fuciformis)", note: "Polissacarídeos associados à hidratação e elasticidade da pele*" },
+  { name: "NMN (Nicotinamida Mononucleotídeo)", note: "Precursor de NAD+ para suporte metabólico celular*" },
+  { name: "Chaga (Inonotus obliquus)", note: "Betaglucanos e polifenóis com ação antioxidante*" },
+  { name: "Fisetina", note: "Flavonóide estudado em protocolos de longevidade*" },
+  { name: "Espermidina", note: "Composto associado a processos autofágicos*" },
+];
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+      {/* HERO MARKETING (Propaganda Albert) */}
+      <section id="hero" className="relative pt-24 pb-8 overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-slate-300/80">
+              <PackageCheck className="size-4" /> Disponível para licenciamento
+            </span>
+            <h1 className="mt-3 text-4xl sm:text-5xl font-semibold leading-tight">
+              CelluNOVA <span className="text-fuchsia-400">DermoRebirth™</span>
+            </h1>
+            <p className="mt-4 text-slate-300/90 text-lg max-w-xl">
+              Bioactive Rejuvenation Formula com Tremella, NMN, Chaga, Fisetina e Espermidina —
+              pronta para integrar seu portfólio sob licenciamento B2B.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="rounded-2xl px-6">
+                <Link href="#parceria">Solicitar parceria</Link>
+              </Button>
+              <Button asChild variant="secondary" size="lg" className="rounded-2xl px-6">
+                <Link href="#comparativo">Ver comparativo</Link>
+              </Button>
+            </div>
+            <div className="mt-6 flex items-center gap-3 text-sm text-slate-300/80">
+              <Star className="size-4" /> Exclusividade negociável
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="relative">
+            <Image
+              src="/images/propaganda-albert.png"
+              alt="Campanha de marketing DermoRebirth™"
+              width={900}
+              height={900}
+              className="w-full h-auto rounded-2xl border border-white/10 shadow-2xl"
+              priority
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* STRIP DE PROVAS */}
+      <section className="py-6 border-y border-white/5 bg-black/20 backdrop-blur">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6">
+          {features.map((f, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <f.icon className="size-5 mt-0.5 text-fuchsia-300" />
+              <div>
+                <p className="text-sm font-medium">{f.title}</p>
+                <p className="text-xs text-slate-300/80">{f.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* BENEFÍCIOS + FOTO DO PRODUTO PILOTO */}
+      <section id="beneficios" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-3xl font-semibold">Oportunidade de Parceria</h2>
+            <p className="mt-3 text-slate-300/90 max-w-prose">
+              Licencie o DermoRebirth™ e ofereça ao mercado um produto exclusivo, com formulação respaldada por evidências e alto valor agregado. Produto (piloto) abaixo é referência do design e embalagem final a ser oferecida.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {benefits.map((b, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="size-5 mt-0.5 text-fuchsia-300" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader>
+              <CardTitle className="text-xl">Produto (piloto)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Image
+                src="/images/produto-piloto.png"
+                alt="Frasco piloto CelluNOVA DermoRebirth™"
+                width={720}
+                height={720}
+                className="w-full h-auto rounded-xl border border-white/10"
+              />
+              <div className="space-y-3">
+                {ingredients.map((ing, i) => (
+                  <div key={i} className="p-3 rounded-xl bg-black/30 border border-white/10">
+                    <p className="font-medium">{ing.name}</p>
+                    <p className="text-sm text-slate-300/80">{ing.note}</p>
+                  </div>
+                ))}
+                <p className="text-xs text-slate-400 pt-1">
+                  *As descrições referem-se a propriedades e literatura do(s) ingrediente(s). Consulte documentação técnica para detalhes.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* BASE CIENTÍFICA */}
+      <section id="ciencia" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2">
+              <h2 className="text-3xl font-semibold">Base científica</h2>
+              <p className="mt-3 text-slate-300/90 max-w-prose">
+                Mantemos um dossiê de referências para cada ingrediente do blend, com foco em protocolos, segurança de uso e sinergias potenciais em adultos saudáveis. Resumos técnicos disponíveis mediante solicitação.
+              </p>
+              <div className="mt-6 grid sm:grid-cols-2 gap-4">
+                {["Tremella e hidratação cutânea", "NMN e metabolismo celular", "Chaga e polifenóis antioxidantes", "Fisetina e estudos de longevidade", "Espermidina e processos autofágicos"].map((t, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                    <Beaker className="size-5 mt-0.5 text-fuchsia-300" />
+                    <div>
+                      <p className="font-medium">{t}</p>
+                      <p className="text-sm text-slate-300/80">Resumo técnico disponível mediante solicitação.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Transparência & Segurança</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>Lote rastreável e fornecedores com controle de qualidade.</p>
+                <p>Boas Práticas de Fabricação (BPF/GMP) no processo do parceiro fabricante.</p>
+                <p>Rótulo claro, sem promessas médicas. Indicado para maiores de 19 anos.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* COMPARATIVO DE MERCADO */}
+      <section id="comparativo" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Comparativo de mercado (ingredientes & posicionamento)</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Abaixo, uma base comparativa lógica focada nos ingredientes principais e no posicionamento de mercado. Não se trata de equivalência clínica; usamos dados públicos e documentação de cada marca para comparação de proposta e composição.
+          </p>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full text-left text-sm border-separate border-spacing-y-2">
+              <thead className="text-slate-300/80">
+                <tr>
+                  <th className="py-2">Marca / Produto</th>
+                  <th className="py-2">Core da fórmula</th>
+                  <th className="py-2">Ângulo de claims</th>
+                  <th className="py-2">Modelo</th>
+                  <th className="py-2">Referências públicas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">CelluNOVA DermoRebirth™</td>
+                  <td className="p-3">Tremella + NMN + Chaga + Fisetina + Espermidina</td>
+                  <td className="p-3">Renovação celular, antioxidante, pele/vitalidade*</td>
+                  <td className="p-3">Licenciamento B2B; exclusividade opcional</td>
+                  <td className="p-3 text-fuchsia-200">Dossiê técnico sob NDA</td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">Elysium Health – Basis</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) + Pterostilbene</td>
+                  <td className="p-3">Suporte a NAD+ e envelhecimento celular*</td>
+                  <td className="p-3">B2C premium (assinatura)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/products/basis" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Site oficial</Link>
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/pages/basis-supplement-facts" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Fórmula pública</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">ChromaDex – Tru Niagen (portfólio NR)</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) como ativo principal</td>
+                  <td className="p-3">Apoio a NAD+ e metabolismo celular*</td>
+                  <td className="p-3">B2C global; ingrediente B2B (Niagen®)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://companiesmarketcap.com/chromadex/revenue/" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Receita 2024</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">NOVOS (linhas longevity)
+                  </td>
+                  <td className="p-3">Combinações pró-longevidade (varia por SKU)</td>
+                  <td className="p-3">Healthy aging e performance*</td>
+                  <td className="p-3">B2C digital-first</td>
+                  <td className="p-3"><span className="text-slate-300/80">Dados públicos limitados</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* PROJEÇÕES */}
+          <div className="mt-10 grid lg:grid-cols-2 gap-6">
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Tamanho de mercado & contexto</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  O mercado global de suplementos anti-idade é estimado entre US$4.5–4.9 bi em 2024/2025, com CAGR ~8% até 2030–2034.
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-300/80">
+                  <li>Fonte (estimativa): Grand View Research 2024 e Precedence Research 2025.</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Cenário de alcance para parceiros (ilustrativo)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  Considerando um parceiro com distribuição nacional capturando 0,05% do mercado global projetado para 2025 (~US$4,88 bi), o volume anual potencial seria ~US$2,44 mi em sell-out. Em 0,1%: ~US$4,88 mi. *Valores ilustrativos; validar com seu canal e mix de SKUs.*
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <p className="mt-6 text-xs text-slate-400">*As menções a benefícios referem-se a literatura de ingredientes. Não se trata de alegações medicinais.</p>
+        </div>
+      </section>
+
+      {/* PARCERIA */}
+      <section id="parceria" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Modelos de Licenciamento</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Trabalhamos com modelos flexíveis de licenciamento, incluindo exclusividade por setor, região ou canal de distribuição, suporte de dossiê técnico, referências científicas e orientação de rotulagem/posicionamento.
+          </p>
+          <div className="mt-6 flex gap-3">
+            <Button size="lg" className="rounded-2xl"><Link href="/contato">Falar com nosso time</Link></Button>
+            <Button size="lg" variant="secondary" className="rounded-2xl"><Link href="#ciencia">Ver ciência</Link></Button>
+          </div>
+        </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section className="py-16">
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <h3 className="text-2xl font-semibold">Novidades da CelluNOVA</h3>
+          <p className="mt-2 text-slate-300/90">Entre para a lista de parceiros e receba materiais técnicos e oportunidades de licenciamento.</p>
+          <form className="mt-6 flex gap-3 justify-center">
+            <Input type="email" placeholder="Seu e-mail corporativo" className="max-w-sm rounded-2xl" />
+            <Button type="submit" className="rounded-2xl">Quero receber</Button>
+          </form>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-10 border-t border-white/10 text-sm text-slate-400">
+        <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} CelluNOVA LTDA. Todos os direitos reservados.</p>
+          <div className="flex gap-6">
+            <Link href="/politica-privacidade">Política de Privacidade</Link>
+            <Link href="/contato">Contato</Link>
+          </div>
+        </div>
+      </footer>
+
+      {/* Structured Data (JSON-LD) para Serviço de Licenciamento */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Licenciamento do blend DermoRebirth™',
+            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA' },
+            serviceType: 'Licensing',
+            areaServed: ['BR', 'US', 'EU'],
+            description: 'Licenciamento B2B do blend nutracêutico DermoRebirth™. Não vendemos ao consumidor final.'
+          }),
+        }}
+      />
+    </main>
+  );
+}
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { FlaskConical, ShieldCheck, Leaf, Clock, CheckCircle2, Star, Microscope, Beaker, PackageCheck, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
+export const metadata = {
+  title: "CelluNOVA DermoRebirth™ | Licenciamento de Blend – Bioactive Rejuvenation Formula",
+  description:
+    "DermoRebirth™ é o blend premium da CelluNOVA com Tremella, NMN, Chaga, Fisetina e Espermidina. Fórmula bioativa disponível para licenciamento B2B a empresas parceiras.",
+  openGraph: {
+    title: "CelluNOVA DermoRebirth™",
+    description:
+      "Blend premium com Tremella, NMN, Chaga, Fisetina e Espermidina. Disponível para licenciamento empresarial.",
+    url: "https://www.cellunovaresearch.com/",
+    siteName: "CelluNOVA Research",
+    images: [
+      {
+        url: "/images/propaganda-albert.png",
+        width: 1200,
+        height: 630,
+        alt: "Campanha CelluNOVA DermoRebirth™ — Genius is eternal. Now, youth is too.",
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+};
+
+const features = [
+  { icon: ShieldCheck, title: "Qualidade Premium", text: "Matérias-primas selecionadas e lote rastreável." },
+  { icon: FlaskConical, title: "Baseado em Evidências", text: "Blend desenvolvido com literatura científica de referência.*" },
+  { icon: Leaf, title: "Clean Label", text: "Sem corantes artificiais. Sem glúten." },
+  { icon: Clock, title: "Pronto para Licenciamento", text: "Integração ágil no portfólio da empresa parceira." },
+];
+
+const benefits = [
+  "Fórmula pronta para licenciamento e personalização pela empresa parceira",
+  "Composição diferenciada com suporte científico*",
+  "Potencial de posicionamento premium e alto LTV",
+  "Exclusividade negociável por região/linha de produto",
+];
+
+const ingredients = [
+  { name: "Tremella (Tremella fuciformis)", note: "Polissacarídeos associados à hidratação e elasticidade da pele*" },
+  { name: "NMN (Nicotinamida Mononucleotídeo)", note: "Precursor de NAD+ para suporte metabólico celular*" },
+  { name: "Chaga (Inonotus obliquus)", note: "Betaglucanos e polifenóis com ação antioxidante*" },
+  { name: "Fisetina", note: "Flavonóide estudado em protocolos de longevidade*" },
+  { name: "Espermidina", note: "Composto associado a processos autofágicos*" },
+];
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+      {/* HERO MARKETING (Propaganda Albert) */}
+      <section id="hero" className="relative pt-24 pb-8 overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-slate-300/80">
+              <PackageCheck className="size-4" /> Disponível para licenciamento
+            </span>
+            <h1 className="mt-3 text-4xl sm:text-5xl font-semibold leading-tight">
+              CelluNOVA <span className="text-fuchsia-400">DermoRebirth™</span>
+            </h1>
+            <p className="mt-4 text-slate-300/90 text-lg max-w-xl">
+              Bioactive Rejuvenation Formula com Tremella, NMN, Chaga, Fisetina e Espermidina —
+              pronta para integrar seu portfólio sob licenciamento B2B.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="rounded-2xl px-6">
+                <Link href="#parceria">Solicitar parceria</Link>
+              </Button>
+              <Button asChild variant="secondary" size="lg" className="rounded-2xl px-6">
+                <Link href="#comparativo">Ver comparativo</Link>
+              </Button>
+            </div>
+            <div className="mt-6 flex items-center gap-3 text-sm text-slate-300/80">
+              <Star className="size-4" /> Exclusividade negociável
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="relative">
+            <Image
+              src="/images/propaganda-albert.png"
+              alt="Campanha de marketing DermoRebirth™"
+              width={900}
+              height={900}
+              className="w-full h-auto rounded-2xl border border-white/10 shadow-2xl"
+              priority
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* STRIP DE PROVAS */}
+      <section className="py-6 border-y border-white/5 bg-black/20 backdrop-blur">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6">
+          {features.map((f, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <f.icon className="size-5 mt-0.5 text-fuchsia-300" />
+              <div>
+                <p className="text-sm font-medium">{f.title}</p>
+                <p className="text-xs text-slate-300/80">{f.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* BENEFÍCIOS + FOTO DO PRODUTO PILOTO */}
+      <section id="beneficios" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-3xl font-semibold">Oportunidade de Parceria</h2>
+            <p className="mt-3 text-slate-300/90 max-w-prose">
+              Licencie o DermoRebirth™ e ofereça ao mercado um produto exclusivo, com formulação respaldada por evidências e alto valor agregado. Produto (piloto) abaixo é referência do design e embalagem final a ser oferecida.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {benefits.map((b, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="size-5 mt-0.5 text-fuchsia-300" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader>
+              <CardTitle className="text-xl">Produto (piloto)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Image
+                src="/images/produto-piloto.png"
+                alt="Frasco piloto CelluNOVA DermoRebirth™"
+                width={720}
+                height={720}
+                className="w-full h-auto rounded-xl border border-white/10"
+              />
+              <div className="space-y-3">
+                {ingredients.map((ing, i) => (
+                  <div key={i} className="p-3 rounded-xl bg-black/30 border border-white/10">
+                    <p className="font-medium">{ing.name}</p>
+                    <p className="text-sm text-slate-300/80">{ing.note}</p>
+                  </div>
+                ))}
+                <p className="text-xs text-slate-400 pt-1">
+                  *As descrições referem-se a propriedades e literatura do(s) ingrediente(s). Consulte documentação técnica para detalhes.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* BASE CIENTÍFICA */}
+      <section id="ciencia" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2">
+              <h2 className="text-3xl font-semibold">Base científica</h2>
+              <p className="mt-3 text-slate-300/90 max-w-prose">
+                Mantemos um dossiê de referências para cada ingrediente do blend, com foco em protocolos, segurança de uso e sinergias potenciais em adultos saudáveis. Resumos técnicos disponíveis mediante solicitação.
+              </p>
+              <div className="mt-6 grid sm:grid-cols-2 gap-4">
+                {["Tremella e hidratação cutânea", "NMN e metabolismo celular", "Chaga e polifenóis antioxidantes", "Fisetina e estudos de longevidade", "Espermidina e processos autofágicos"].map((t, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                    <Beaker className="size-5 mt-0.5 text-fuchsia-300" />
+                    <div>
+                      <p className="font-medium">{t}</p>
+                      <p className="text-sm text-slate-300/80">Resumo técnico disponível mediante solicitação.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Transparência & Segurança</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>Lote rastreável e fornecedores com controle de qualidade.</p>
+                <p>Boas Práticas de Fabricação (BPF/GMP) no processo do parceiro fabricante.</p>
+                <p>Rótulo claro, sem promessas médicas. Indicado para maiores de 19 anos.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* COMPARATIVO DE MERCADO */}
+      <section id="comparativo" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Comparativo de mercado (ingredientes & posicionamento)</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Abaixo, uma base comparativa lógica focada nos ingredientes principais e no posicionamento de mercado. Não se trata de equivalência clínica; usamos dados públicos e documentação de cada marca para comparação de proposta e composição.
+          </p>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full text-left text-sm border-separate border-spacing-y-2">
+              <thead className="text-slate-300/80">
+                <tr>
+                  <th className="py-2">Marca / Produto</th>
+                  <th className="py-2">Core da fórmula</th>
+                  <th className="py-2">Ângulo de claims</th>
+                  <th className="py-2">Modelo</th>
+                  <th className="py-2">Referências públicas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">CelluNOVA DermoRebirth™</td>
+                  <td className="p-3">Tremella + NMN + Chaga + Fisetina + Espermidina</td>
+                  <td className="p-3">Renovação celular, antioxidante, pele/vitalidade*</td>
+                  <td className="p-3">Licenciamento B2B; exclusividade opcional</td>
+                  <td className="p-3 text-fuchsia-200">Dossiê técnico sob NDA</td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">Elysium Health – Basis</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) + Pterostilbene</td>
+                  <td className="p-3">Suporte a NAD+ e envelhecimento celular*</td>
+                  <td className="p-3">B2C premium (assinatura)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/products/basis" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Site oficial</Link>
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/pages/basis-supplement-facts" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Fórmula pública</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">ChromaDex – Tru Niagen (portfólio NR)</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) como ativo principal</td>
+                  <td className="p-3">Apoio a NAD+ e metabolismo celular*</td>
+                  <td className="p-3">B2C global; ingrediente B2B (Niagen®)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://companiesmarketcap.com/chromadex/revenue/" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Receita 2024</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">NOVOS (linhas longevity)
+                  </td>
+                  <td className="p-3">Combinações pró-longevidade (varia por SKU)</td>
+                  <td className="p-3">Healthy aging e performance*</td>
+                  <td className="p-3">B2C digital-first</td>
+                  <td className="p-3"><span className="text-slate-300/80">Dados públicos limitados</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* PROJEÇÕES */}
+          <div className="mt-10 grid lg:grid-cols-2 gap-6">
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Tamanho de mercado & contexto</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  O mercado global de suplementos anti-idade é estimado entre US$4.5–4.9 bi em 2024/2025, com CAGR ~8% até 2030–2034.
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-300/80">
+                  <li>Fonte (estimativa): Grand View Research 2024 e Precedence Research 2025.</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Cenário de alcance para parceiros (ilustrativo)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  Considerando um parceiro com distribuição nacional capturando 0,05% do mercado global projetado para 2025 (~US$4,88 bi), o volume anual potencial seria ~US$2,44 mi em sell-out. Em 0,1%: ~US$4,88 mi. *Valores ilustrativos; validar com seu canal e mix de SKUs.*
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <p className="mt-6 text-xs text-slate-400">*As menções a benefícios referem-se a literatura de ingredientes. Não se trata de alegações medicinais.</p>
+        </div>
+      </section>
+
+      {/* PARCERIA */}
+      <section id="parceria" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Modelos de Licenciamento</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Trabalhamos com modelos flexíveis de licenciamento, incluindo exclusividade por setor, região ou canal de distribuição, suporte de dossiê técnico, referências científicas e orientação de rotulagem/posicionamento.
+          </p>
+          <div className="mt-6 flex gap-3">
+            <Button size="lg" className="rounded-2xl"><Link href="/contato">Falar com nosso time</Link></Button>
+            <Button size="lg" variant="secondary" className="rounded-2xl"><Link href="#ciencia">Ver ciência</Link></Button>
+          </div>
+        </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section className="py-16">
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <h3 className="text-2xl font-semibold">Novidades da CelluNOVA</h3>
+          <p className="mt-2 text-slate-300/90">Entre para a lista de parceiros e receba materiais técnicos e oportunidades de licenciamento.</p>
+          <form className="mt-6 flex gap-3 justify-center">
+            <Input type="email" placeholder="Seu e-mail corporativo" className="max-w-sm rounded-2xl" />
+            <Button type="submit" className="rounded-2xl">Quero receber</Button>
+          </form>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-10 border-t border-white/10 text-sm text-slate-400">
+        <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} CelluNOVA LTDA. Todos os direitos reservados.</p>
+          <div className="flex gap-6">
+            <Link href="/politica-privacidade">Política de Privacidade</Link>
+            <Link href="/contato">Contato</Link>
+          </div>
+        </div>
+      </footer>
+
+      {/* Structured Data (JSON-LD) para Serviço de Licenciamento */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Licenciamento do blend DermoRebirth™',
+            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA' },
+            serviceType: 'Licensing',
+            areaServed: ['BR', 'US', 'EU'],
+            description: 'Licenciamento B2B do blend nutracêutico DermoRebirth™. Não vendemos ao consumidor final.'
+          }),
+        }}
+      />
+    </main>
+  );
+}
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { FlaskConical, ShieldCheck, Leaf, Clock, CheckCircle2, Star, Microscope, Beaker, PackageCheck, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
+export const metadata = {
+  title: "CelluNOVA DermoRebirth™ | Licenciamento de Blend – Bioactive Rejuvenation Formula",
+  description:
+    "DermoRebirth™ é o blend premium da CelluNOVA com Tremella, NMN, Chaga, Fisetina e Espermidina. Fórmula bioativa disponível para licenciamento B2B a empresas parceiras.",
+  openGraph: {
+    title: "CelluNOVA DermoRebirth™",
+    description:
+      "Blend premium com Tremella, NMN, Chaga, Fisetina e Espermidina. Disponível para licenciamento empresarial.",
+    url: "https://www.cellunovaresearch.com/",
+    siteName: "CelluNOVA Research",
+    images: [
+      {
+        url: "/images/propaganda-albert.png",
+        width: 1200,
+        height: 630,
+        alt: "Campanha CelluNOVA DermoRebirth™ — Genius is eternal. Now, youth is too.",
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+};
+
+const features = [
+  { icon: ShieldCheck, title: "Qualidade Premium", text: "Matérias-primas selecionadas e lote rastreável." },
+  { icon: FlaskConical, title: "Baseado em Evidências", text: "Blend desenvolvido com literatura científica de referência.*" },
+  { icon: Leaf, title: "Clean Label", text: "Sem corantes artificiais. Sem glúten." },
+  { icon: Clock, title: "Pronto para Licenciamento", text: "Integração ágil no portfólio da empresa parceira." },
+];
+
+const benefits = [
+  "Fórmula pronta para licenciamento e personalização pela empresa parceira",
+  "Composição diferenciada com suporte científico*",
+  "Potencial de posicionamento premium e alto LTV",
+  "Exclusividade negociável por região/linha de produto",
+];
+
+const ingredients = [
+  { name: "Tremella (Tremella fuciformis)", note: "Polissacarídeos associados à hidratação e elasticidade da pele*" },
+  { name: "NMN (Nicotinamida Mononucleotídeo)", note: "Precursor de NAD+ para suporte metabólico celular*" },
+  { name: "Chaga (Inonotus obliquus)", note: "Betaglucanos e polifenóis com ação antioxidante*" },
+  { name: "Fisetina", note: "Flavonóide estudado em protocolos de longevidade*" },
+  { name: "Espermidina", note: "Composto associado a processos autofágicos*" },
+];
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+      {/* HERO MARKETING (Propaganda Albert) */}
+      <section id="hero" className="relative pt-24 pb-8 overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-slate-300/80">
+              <PackageCheck className="size-4" /> Disponível para licenciamento
+            </span>
+            <h1 className="mt-3 text-4xl sm:text-5xl font-semibold leading-tight">
+              CelluNOVA <span className="text-fuchsia-400">DermoRebirth™</span>
+            </h1>
+            <p className="mt-4 text-slate-300/90 text-lg max-w-xl">
+              Bioactive Rejuvenation Formula com Tremella, NMN, Chaga, Fisetina e Espermidina —
+              pronta para integrar seu portfólio sob licenciamento B2B.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="rounded-2xl px-6">
+                <Link href="#parceria">Solicitar parceria</Link>
+              </Button>
+              <Button asChild variant="secondary" size="lg" className="rounded-2xl px-6">
+                <Link href="#comparativo">Ver comparativo</Link>
+              </Button>
+            </div>
+            <div className="mt-6 flex items-center gap-3 text-sm text-slate-300/80">
+              <Star className="size-4" /> Exclusividade negociável
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="relative">
+            <Image
+              src="/images/propaganda-albert.png"
+              alt="Campanha de marketing DermoRebirth™"
+              width={900}
+              height={900}
+              className="w-full h-auto rounded-2xl border border-white/10 shadow-2xl"
+              priority
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* STRIP DE PROVAS */}
+      <section className="py-6 border-y border-white/5 bg-black/20 backdrop-blur">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6">
+          {features.map((f, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <f.icon className="size-5 mt-0.5 text-fuchsia-300" />
+              <div>
+                <p className="text-sm font-medium">{f.title}</p>
+                <p className="text-xs text-slate-300/80">{f.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* BENEFÍCIOS + FOTO DO PRODUTO PILOTO */}
+      <section id="beneficios" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-3xl font-semibold">Oportunidade de Parceria</h2>
+            <p className="mt-3 text-slate-300/90 max-w-prose">
+              Licencie o DermoRebirth™ e ofereça ao mercado um produto exclusivo, com formulação respaldada por evidências e alto valor agregado. Produto (piloto) abaixo é referência do design e embalagem final a ser oferecida.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {benefits.map((b, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="size-5 mt-0.5 text-fuchsia-300" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader>
+              <CardTitle className="text-xl">Produto (piloto)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Image
+                src="/images/produto-piloto.png"
+                alt="Frasco piloto CelluNOVA DermoRebirth™"
+                width={720}
+                height={720}
+                className="w-full h-auto rounded-xl border border-white/10"
+              />
+              <div className="space-y-3">
+                {ingredients.map((ing, i) => (
+                  <div key={i} className="p-3 rounded-xl bg-black/30 border border-white/10">
+                    <p className="font-medium">{ing.name}</p>
+                    <p className="text-sm text-slate-300/80">{ing.note}</p>
+                  </div>
+                ))}
+                <p className="text-xs text-slate-400 pt-1">
+                  *As descrições referem-se a propriedades e literatura do(s) ingrediente(s). Consulte documentação técnica para detalhes.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* BASE CIENTÍFICA */}
+      <section id="ciencia" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2">
+              <h2 className="text-3xl font-semibold">Base científica</h2>
+              <p className="mt-3 text-slate-300/90 max-w-prose">
+                Mantemos um dossiê de referências para cada ingrediente do blend, com foco em protocolos, segurança de uso e sinergias potenciais em adultos saudáveis. Resumos técnicos disponíveis mediante solicitação.
+              </p>
+              <div className="mt-6 grid sm:grid-cols-2 gap-4">
+                {["Tremella e hidratação cutânea", "NMN e metabolismo celular", "Chaga e polifenóis antioxidantes", "Fisetina e estudos de longevidade", "Espermidina e processos autofágicos"].map((t, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                    <Beaker className="size-5 mt-0.5 text-fuchsia-300" />
+                    <div>
+                      <p className="font-medium">{t}</p>
+                      <p className="text-sm text-slate-300/80">Resumo técnico disponível mediante solicitação.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Transparência & Segurança</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>Lote rastreável e fornecedores com controle de qualidade.</p>
+                <p>Boas Práticas de Fabricação (BPF/GMP) no processo do parceiro fabricante.</p>
+                <p>Rótulo claro, sem promessas médicas. Indicado para maiores de 19 anos.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* COMPARATIVO DE MERCADO */}
+      <section id="comparativo" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Comparativo de mercado (ingredientes & posicionamento)</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Abaixo, uma base comparativa lógica focada nos ingredientes principais e no posicionamento de mercado. Não se trata de equivalência clínica; usamos dados públicos e documentação de cada marca para comparação de proposta e composição.
+          </p>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full text-left text-sm border-separate border-spacing-y-2">
+              <thead className="text-slate-300/80">
+                <tr>
+                  <th className="py-2">Marca / Produto</th>
+                  <th className="py-2">Core da fórmula</th>
+                  <th className="py-2">Ângulo de claims</th>
+                  <th className="py-2">Modelo</th>
+                  <th className="py-2">Referências públicas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">CelluNOVA DermoRebirth™</td>
+                  <td className="p-3">Tremella + NMN + Chaga + Fisetina + Espermidina</td>
+                  <td className="p-3">Renovação celular, antioxidante, pele/vitalidade*</td>
+                  <td className="p-3">Licenciamento B2B; exclusividade opcional</td>
+                  <td className="p-3 text-fuchsia-200">Dossiê técnico sob NDA</td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">Elysium Health – Basis</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) + Pterostilbene</td>
+                  <td className="p-3">Suporte a NAD+ e envelhecimento celular*</td>
+                  <td className="p-3">B2C premium (assinatura)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/products/basis" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Site oficial</Link>
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/pages/basis-supplement-facts" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Fórmula pública</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">ChromaDex – Tru Niagen (portfólio NR)</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) como ativo principal</td>
+                  <td className="p-3">Apoio a NAD+ e metabolismo celular*</td>
+                  <td className="p-3">B2C global; ingrediente B2B (Niagen®)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://companiesmarketcap.com/chromadex/revenue/" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Receita 2024</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">NOVOS (linhas longevity)
+                  </td>
+                  <td className="p-3">Combinações pró-longevidade (varia por SKU)</td>
+                  <td className="p-3">Healthy aging e performance*</td>
+                  <td className="p-3">B2C digital-first</td>
+                  <td className="p-3"><span className="text-slate-300/80">Dados públicos limitados</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* PROJEÇÕES */}
+          <div className="mt-10 grid lg:grid-cols-2 gap-6">
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Tamanho de mercado & contexto</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  O mercado global de suplementos anti-idade é estimado entre US$4.5–4.9 bi em 2024/2025, com CAGR ~8% até 2030–2034.
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-300/80">
+                  <li>Fonte (estimativa): Grand View Research 2024 e Precedence Research 2025.</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Cenário de alcance para parceiros (ilustrativo)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  Considerando um parceiro com distribuição nacional capturando 0,05% do mercado global projetado para 2025 (~US$4,88 bi), o volume anual potencial seria ~US$2,44 mi em sell-out. Em 0,1%: ~US$4,88 mi. *Valores ilustrativos; validar com seu canal e mix de SKUs.*
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <p className="mt-6 text-xs text-slate-400">*As menções a benefícios referem-se a literatura de ingredientes. Não se trata de alegações medicinais.</p>
+        </div>
+      </section>
+
+      {/* PARCERIA */}
+      <section id="parceria" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Modelos de Licenciamento</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Trabalhamos com modelos flexíveis de licenciamento, incluindo exclusividade por setor, região ou canal de distribuição, suporte de dossiê técnico, referências científicas e orientação de rotulagem/posicionamento.
+          </p>
+          <div className="mt-6 flex gap-3">
+            <Button size="lg" className="rounded-2xl"><Link href="/contato">Falar com nosso time</Link></Button>
+            <Button size="lg" variant="secondary" className="rounded-2xl"><Link href="#ciencia">Ver ciência</Link></Button>
+          </div>
+        </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section className="py-16">
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <h3 className="text-2xl font-semibold">Novidades da CelluNOVA</h3>
+          <p className="mt-2 text-slate-300/90">Entre para a lista de parceiros e receba materiais técnicos e oportunidades de licenciamento.</p>
+          <form className="mt-6 flex gap-3 justify-center">
+            <Input type="email" placeholder="Seu e-mail corporativo" className="max-w-sm rounded-2xl" />
+            <Button type="submit" className="rounded-2xl">Quero receber</Button>
+          </form>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-10 border-t border-white/10 text-sm text-slate-400">
+        <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} CelluNOVA LTDA. Todos os direitos reservados.</p>
+          <div className="flex gap-6">
+            <Link href="/politica-privacidade">Política de Privacidade</Link>
+            <Link href="/contato">Contato</Link>
+          </div>
+        </div>
+      </footer>
+
+      {/* Structured Data (JSON-LD) para Serviço de Licenciamento */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Licenciamento do blend DermoRebirth™',
+            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA' },
+            serviceType: 'Licensing',
+            areaServed: ['BR', 'US', 'EU'],
+            description: 'Licenciamento B2B do blend nutracêutico DermoRebirth™. Não vendemos ao consumidor final.'
+          }),
+        }}
+      />
+    </main>
+  );
+}
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { FlaskConical, ShieldCheck, Leaf, Clock, CheckCircle2, Star, Microscope, Beaker, PackageCheck, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
+export const metadata = {
+  title: "CelluNOVA DermoRebirth™ | Licenciamento de Blend – Bioactive Rejuvenation Formula",
+  description:
+    "DermoRebirth™ é o blend premium da CelluNOVA com Tremella, NMN, Chaga, Fisetina e Espermidina. Fórmula bioativa disponível para licenciamento B2B a empresas parceiras.",
+  openGraph: {
+    title: "CelluNOVA DermoRebirth™",
+    description:
+      "Blend premium com Tremella, NMN, Chaga, Fisetina e Espermidina. Disponível para licenciamento empresarial.",
+    url: "https://www.cellunovaresearch.com/",
+    siteName: "CelluNOVA Research",
+    images: [
+      {
+        url: "/images/propaganda-albert.png",
+        width: 1200,
+        height: 630,
+        alt: "Campanha CelluNOVA DermoRebirth™ — Genius is eternal. Now, youth is too.",
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+};
+
+const features = [
+  { icon: ShieldCheck, title: "Qualidade Premium", text: "Matérias-primas selecionadas e lote rastreável." },
+  { icon: FlaskConical, title: "Baseado em Evidências", text: "Blend desenvolvido com literatura científica de referência.*" },
+  { icon: Leaf, title: "Clean Label", text: "Sem corantes artificiais. Sem glúten." },
+  { icon: Clock, title: "Pronto para Licenciamento", text: "Integração ágil no portfólio da empresa parceira." },
+];
+
+const benefits = [
+  "Fórmula pronta para licenciamento e personalização pela empresa parceira",
+  "Composição diferenciada com suporte científico*",
+  "Potencial de posicionamento premium e alto LTV",
+  "Exclusividade negociável por região/linha de produto",
+];
+
+const ingredients = [
+  { name: "Tremella (Tremella fuciformis)", note: "Polissacarídeos associados à hidratação e elasticidade da pele*" },
+  { name: "NMN (Nicotinamida Mononucleotídeo)", note: "Precursor de NAD+ para suporte metabólico celular*" },
+  { name: "Chaga (Inonotus obliquus)", note: "Betaglucanos e polifenóis com ação antioxidante*" },
+  { name: "Fisetina", note: "Flavonóide estudado em protocolos de longevidade*" },
+  { name: "Espermidina", note: "Composto associado a processos autofágicos*" },
+];
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+      {/* HERO MARKETING (Propaganda Albert) */}
+      <section id="hero" className="relative pt-24 pb-8 overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-slate-300/80">
+              <PackageCheck className="size-4" /> Disponível para licenciamento
+            </span>
+            <h1 className="mt-3 text-4xl sm:text-5xl font-semibold leading-tight">
+              CelluNOVA <span className="text-fuchsia-400">DermoRebirth™</span>
+            </h1>
+            <p className="mt-4 text-slate-300/90 text-lg max-w-xl">
+              Bioactive Rejuvenation Formula com Tremella, NMN, Chaga, Fisetina e Espermidina —
+              pronta para integrar seu portfólio sob licenciamento B2B.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="rounded-2xl px-6">
+                <Link href="#parceria">Solicitar parceria</Link>
+              </Button>
+              <Button asChild variant="secondary" size="lg" className="rounded-2xl px-6">
+                <Link href="#comparativo">Ver comparativo</Link>
+              </Button>
+            </div>
+            <div className="mt-6 flex items-center gap-3 text-sm text-slate-300/80">
+              <Star className="size-4" /> Exclusividade negociável
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="relative">
+            <Image
+              src="/images/propaganda-albert.png"
+              alt="Campanha de marketing DermoRebirth™"
+              width={900}
+              height={900}
+              className="w-full h-auto rounded-2xl border border-white/10 shadow-2xl"
+              priority
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* STRIP DE PROVAS */}
+      <section className="py-6 border-y border-white/5 bg-black/20 backdrop-blur">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6">
+          {features.map((f, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <f.icon className="size-5 mt-0.5 text-fuchsia-300" />
+              <div>
+                <p className="text-sm font-medium">{f.title}</p>
+                <p className="text-xs text-slate-300/80">{f.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* BENEFÍCIOS + FOTO DO PRODUTO PILOTO */}
+      <section id="beneficios" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-3xl font-semibold">Oportunidade de Parceria</h2>
+            <p className="mt-3 text-slate-300/90 max-w-prose">
+              Licencie o DermoRebirth™ e ofereça ao mercado um produto exclusivo, com formulação respaldada por evidências e alto valor agregado. Produto (piloto) abaixo é referência do design e embalagem final a ser oferecida.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {benefits.map((b, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="size-5 mt-0.5 text-fuchsia-300" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader>
+              <CardTitle className="text-xl">Produto (piloto)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Image
+                src="/images/produto-piloto.png"
+                alt="Frasco piloto CelluNOVA DermoRebirth™"
+                width={720}
+                height={720}
+                className="w-full h-auto rounded-xl border border-white/10"
+              />
+              <div className="space-y-3">
+                {ingredients.map((ing, i) => (
+                  <div key={i} className="p-3 rounded-xl bg-black/30 border border-white/10">
+                    <p className="font-medium">{ing.name}</p>
+                    <p className="text-sm text-slate-300/80">{ing.note}</p>
+                  </div>
+                ))}
+                <p className="text-xs text-slate-400 pt-1">
+                  *As descrições referem-se a propriedades e literatura do(s) ingrediente(s). Consulte documentação técnica para detalhes.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* BASE CIENTÍFICA */}
+      <section id="ciencia" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2">
+              <h2 className="text-3xl font-semibold">Base científica</h2>
+              <p className="mt-3 text-slate-300/90 max-w-prose">
+                Mantemos um dossiê de referências para cada ingrediente do blend, com foco em protocolos, segurança de uso e sinergias potenciais em adultos saudáveis. Resumos técnicos disponíveis mediante solicitação.
+              </p>
+              <div className="mt-6 grid sm:grid-cols-2 gap-4">
+                {["Tremella e hidratação cutânea", "NMN e metabolismo celular", "Chaga e polifenóis antioxidantes", "Fisetina e estudos de longevidade", "Espermidina e processos autofágicos"].map((t, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                    <Beaker className="size-5 mt-0.5 text-fuchsia-300" />
+                    <div>
+                      <p className="font-medium">{t}</p>
+                      <p className="text-sm text-slate-300/80">Resumo técnico disponível mediante solicitação.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Transparência & Segurança</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>Lote rastreável e fornecedores com controle de qualidade.</p>
+                <p>Boas Práticas de Fabricação (BPF/GMP) no processo do parceiro fabricante.</p>
+                <p>Rótulo claro, sem promessas médicas. Indicado para maiores de 19 anos.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* COMPARATIVO DE MERCADO */}
+      <section id="comparativo" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Comparativo de mercado (ingredientes & posicionamento)</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Abaixo, uma base comparativa lógica focada nos ingredientes principais e no posicionamento de mercado. Não se trata de equivalência clínica; usamos dados públicos e documentação de cada marca para comparação de proposta e composição.
+          </p>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full text-left text-sm border-separate border-spacing-y-2">
+              <thead className="text-slate-300/80">
+                <tr>
+                  <th className="py-2">Marca / Produto</th>
+                  <th className="py-2">Core da fórmula</th>
+                  <th className="py-2">Ângulo de claims</th>
+                  <th className="py-2">Modelo</th>
+                  <th className="py-2">Referências públicas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">CelluNOVA DermoRebirth™</td>
+                  <td className="p-3">Tremella + NMN + Chaga + Fisetina + Espermidina</td>
+                  <td className="p-3">Renovação celular, antioxidante, pele/vitalidade*</td>
+                  <td className="p-3">Licenciamento B2B; exclusividade opcional</td>
+                  <td className="p-3 text-fuchsia-200">Dossiê técnico sob NDA</td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">Elysium Health – Basis</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) + Pterostilbene</td>
+                  <td className="p-3">Suporte a NAD+ e envelhecimento celular*</td>
+                  <td className="p-3">B2C premium (assinatura)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/products/basis" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Site oficial</Link>
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/pages/basis-supplement-facts" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Fórmula pública</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">ChromaDex – Tru Niagen (portfólio NR)</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) como ativo principal</td>
+                  <td className="p-3">Apoio a NAD+ e metabolismo celular*</td>
+                  <td className="p-3">B2C global; ingrediente B2B (Niagen®)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://companiesmarketcap.com/chromadex/revenue/" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Receita 2024</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">NOVOS (linhas longevity)
+                  </td>
+                  <td className="p-3">Combinações pró-longevidade (varia por SKU)</td>
+                  <td className="p-3">Healthy aging e performance*</td>
+                  <td className="p-3">B2C digital-first</td>
+                  <td className="p-3"><span className="text-slate-300/80">Dados públicos limitados</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* PROJEÇÕES */}
+          <div className="mt-10 grid lg:grid-cols-2 gap-6">
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Tamanho de mercado & contexto</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  O mercado global de suplementos anti-idade é estimado entre US$4.5–4.9 bi em 2024/2025, com CAGR ~8% até 2030–2034.
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-300/80">
+                  <li>Fonte (estimativa): Grand View Research 2024 e Precedence Research 2025.</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Cenário de alcance para parceiros (ilustrativo)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  Considerando um parceiro com distribuição nacional capturando 0,05% do mercado global projetado para 2025 (~US$4,88 bi), o volume anual potencial seria ~US$2,44 mi em sell-out. Em 0,1%: ~US$4,88 mi. *Valores ilustrativos; validar com seu canal e mix de SKUs.*
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <p className="mt-6 text-xs text-slate-400">*As menções a benefícios referem-se a literatura de ingredientes. Não se trata de alegações medicinais.</p>
+        </div>
+      </section>
+
+      {/* PARCERIA */}
+      <section id="parceria" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Modelos de Licenciamento</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Trabalhamos com modelos flexíveis de licenciamento, incluindo exclusividade por setor, região ou canal de distribuição, suporte de dossiê técnico, referências científicas e orientação de rotulagem/posicionamento.
+          </p>
+          <div className="mt-6 flex gap-3">
+            <Button size="lg" className="rounded-2xl"><Link href="/contato">Falar com nosso time</Link></Button>
+            <Button size="lg" variant="secondary" className="rounded-2xl"><Link href="#ciencia">Ver ciência</Link></Button>
+          </div>
+        </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section className="py-16">
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <h3 className="text-2xl font-semibold">Novidades da CelluNOVA</h3>
+          <p className="mt-2 text-slate-300/90">Entre para a lista de parceiros e receba materiais técnicos e oportunidades de licenciamento.</p>
+          <form className="mt-6 flex gap-3 justify-center">
+            <Input type="email" placeholder="Seu e-mail corporativo" className="max-w-sm rounded-2xl" />
+            <Button type="submit" className="rounded-2xl">Quero receber</Button>
+          </form>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-10 border-t border-white/10 text-sm text-slate-400">
+        <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} CelluNOVA LTDA. Todos os direitos reservados.</p>
+          <div className="flex gap-6">
+            <Link href="/politica-privacidade">Política de Privacidade</Link>
+            <Link href="/contato">Contato</Link>
+          </div>
+        </div>
+      </footer>
+
+      {/* Structured Data (JSON-LD) para Serviço de Licenciamento */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Licenciamento do blend DermoRebirth™',
+            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA' },
+            serviceType: 'Licensing',
+            areaServed: ['BR', 'US', 'EU'],
+            description: 'Licenciamento B2B do blend nutracêutico DermoRebirth™. Não vendemos ao consumidor final.'
+          }),
+        }}
+      />
+    </main>
+  );
+}
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { FlaskConical, ShieldCheck, Leaf, Clock, CheckCircle2, Star, Microscope, Beaker, PackageCheck, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
+export const metadata = {
+  title: "CelluNOVA DermoRebirth™ | Licenciamento de Blend – Bioactive Rejuvenation Formula",
+  description:
+    "DermoRebirth™ é o blend premium da CelluNOVA com Tremella, NMN, Chaga, Fisetina e Espermidina. Fórmula bioativa disponível para licenciamento B2B a empresas parceiras.",
+  openGraph: {
+    title: "CelluNOVA DermoRebirth™",
+    description:
+      "Blend premium com Tremella, NMN, Chaga, Fisetina e Espermidina. Disponível para licenciamento empresarial.",
+    url: "https://www.cellunovaresearch.com/",
+    siteName: "CelluNOVA Research",
+    images: [
+      {
+        url: "/images/propaganda-albert.png",
+        width: 1200,
+        height: 630,
+        alt: "Campanha CelluNOVA DermoRebirth™ — Genius is eternal. Now, youth is too.",
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+};
+
+const features = [
+  { icon: ShieldCheck, title: "Qualidade Premium", text: "Matérias-primas selecionadas e lote rastreável." },
+  { icon: FlaskConical, title: "Baseado em Evidências", text: "Blend desenvolvido com literatura científica de referência.*" },
+  { icon: Leaf, title: "Clean Label", text: "Sem corantes artificiais. Sem glúten." },
+  { icon: Clock, title: "Pronto para Licenciamento", text: "Integração ágil no portfólio da empresa parceira." },
+];
+
+const benefits = [
+  "Fórmula pronta para licenciamento e personalização pela empresa parceira",
+  "Composição diferenciada com suporte científico*",
+  "Potencial de posicionamento premium e alto LTV",
+  "Exclusividade negociável por região/linha de produto",
+];
+
+const ingredients = [
+  { name: "Tremella (Tremella fuciformis)", note: "Polissacarídeos associados à hidratação e elasticidade da pele*" },
+  { name: "NMN (Nicotinamida Mononucleotídeo)", note: "Precursor de NAD+ para suporte metabólico celular*" },
+  { name: "Chaga (Inonotus obliquus)", note: "Betaglucanos e polifenóis com ação antioxidante*" },
+  { name: "Fisetina", note: "Flavonóide estudado em protocolos de longevidade*" },
+  { name: "Espermidina", note: "Composto associado a processos autofágicos*" },
+];
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+      {/* HERO MARKETING (Propaganda Albert) */}
+      <section id="hero" className="relative pt-24 pb-8 overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-slate-300/80">
+              <PackageCheck className="size-4" /> Disponível para licenciamento
+            </span>
+            <h1 className="mt-3 text-4xl sm:text-5xl font-semibold leading-tight">
+              CelluNOVA <span className="text-fuchsia-400">DermoRebirth™</span>
+            </h1>
+            <p className="mt-4 text-slate-300/90 text-lg max-w-xl">
+              Bioactive Rejuvenation Formula com Tremella, NMN, Chaga, Fisetina e Espermidina —
+              pronta para integrar seu portfólio sob licenciamento B2B.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="rounded-2xl px-6">
+                <Link href="#parceria">Solicitar parceria</Link>
+              </Button>
+              <Button asChild variant="secondary" size="lg" className="rounded-2xl px-6">
+                <Link href="#comparativo">Ver comparativo</Link>
+              </Button>
+            </div>
+            <div className="mt-6 flex items-center gap-3 text-sm text-slate-300/80">
+              <Star className="size-4" /> Exclusividade negociável
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="relative">
+            <Image
+              src="/images/propaganda-albert.png"
+              alt="Campanha de marketing DermoRebirth™"
+              width={900}
+              height={900}
+              className="w-full h-auto rounded-2xl border border-white/10 shadow-2xl"
+              priority
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* STRIP DE PROVAS */}
+      <section className="py-6 border-y border-white/5 bg-black/20 backdrop-blur">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6">
+          {features.map((f, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <f.icon className="size-5 mt-0.5 text-fuchsia-300" />
+              <div>
+                <p className="text-sm font-medium">{f.title}</p>
+                <p className="text-xs text-slate-300/80">{f.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* BENEFÍCIOS + FOTO DO PRODUTO PILOTO */}
+      <section id="beneficios" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-3xl font-semibold">Oportunidade de Parceria</h2>
+            <p className="mt-3 text-slate-300/90 max-w-prose">
+              Licencie o DermoRebirth™ e ofereça ao mercado um produto exclusivo, com formulação respaldada por evidências e alto valor agregado. Produto (piloto) abaixo é referência do design e embalagem final a ser oferecida.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {benefits.map((b, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="size-5 mt-0.5 text-fuchsia-300" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader>
+              <CardTitle className="text-xl">Produto (piloto)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Image
+                src="/images/produto-piloto.png"
+                alt="Frasco piloto CelluNOVA DermoRebirth™"
+                width={720}
+                height={720}
+                className="w-full h-auto rounded-xl border border-white/10"
+              />
+              <div className="space-y-3">
+                {ingredients.map((ing, i) => (
+                  <div key={i} className="p-3 rounded-xl bg-black/30 border border-white/10">
+                    <p className="font-medium">{ing.name}</p>
+                    <p className="text-sm text-slate-300/80">{ing.note}</p>
+                  </div>
+                ))}
+                <p className="text-xs text-slate-400 pt-1">
+                  *As descrições referem-se a propriedades e literatura do(s) ingrediente(s). Consulte documentação técnica para detalhes.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* BASE CIENTÍFICA */}
+      <section id="ciencia" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2">
+              <h2 className="text-3xl font-semibold">Base científica</h2>
+              <p className="mt-3 text-slate-300/90 max-w-prose">
+                Mantemos um dossiê de referências para cada ingrediente do blend, com foco em protocolos, segurança de uso e sinergias potenciais em adultos saudáveis. Resumos técnicos disponíveis mediante solicitação.
+              </p>
+              <div className="mt-6 grid sm:grid-cols-2 gap-4">
+                {["Tremella e hidratação cutânea", "NMN e metabolismo celular", "Chaga e polifenóis antioxidantes", "Fisetina e estudos de longevidade", "Espermidina e processos autofágicos"].map((t, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                    <Beaker className="size-5 mt-0.5 text-fuchsia-300" />
+                    <div>
+                      <p className="font-medium">{t}</p>
+                      <p className="text-sm text-slate-300/80">Resumo técnico disponível mediante solicitação.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Transparência & Segurança</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>Lote rastreável e fornecedores com controle de qualidade.</p>
+                <p>Boas Práticas de Fabricação (BPF/GMP) no processo do parceiro fabricante.</p>
+                <p>Rótulo claro, sem promessas médicas. Indicado para maiores de 19 anos.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* COMPARATIVO DE MERCADO */}
+      <section id="comparativo" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Comparativo de mercado (ingredientes & posicionamento)</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Abaixo, uma base comparativa lógica focada nos ingredientes principais e no posicionamento de mercado. Não se trata de equivalência clínica; usamos dados públicos e documentação de cada marca para comparação de proposta e composição.
+          </p>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full text-left text-sm border-separate border-spacing-y-2">
+              <thead className="text-slate-300/80">
+                <tr>
+                  <th className="py-2">Marca / Produto</th>
+                  <th className="py-2">Core da fórmula</th>
+                  <th className="py-2">Ângulo de claims</th>
+                  <th className="py-2">Modelo</th>
+                  <th className="py-2">Referências públicas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">CelluNOVA DermoRebirth™</td>
+                  <td className="p-3">Tremella + NMN + Chaga + Fisetina + Espermidina</td>
+                  <td className="p-3">Renovação celular, antioxidante, pele/vitalidade*</td>
+                  <td className="p-3">Licenciamento B2B; exclusividade opcional</td>
+                  <td className="p-3 text-fuchsia-200">Dossiê técnico sob NDA</td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">Elysium Health – Basis</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) + Pterostilbene</td>
+                  <td className="p-3">Suporte a NAD+ e envelhecimento celular*</td>
+                  <td className="p-3">B2C premium (assinatura)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/products/basis" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Site oficial</Link>
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/pages/basis-supplement-facts" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Fórmula pública</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">ChromaDex – Tru Niagen (portfólio NR)</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) como ativo principal</td>
+                  <td className="p-3">Apoio a NAD+ e metabolismo celular*</td>
+                  <td className="p-3">B2C global; ingrediente B2B (Niagen®)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://companiesmarketcap.com/chromadex/revenue/" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Receita 2024</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">NOVOS (linhas longevity)
+                  </td>
+                  <td className="p-3">Combinações pró-longevidade (varia por SKU)</td>
+                  <td className="p-3">Healthy aging e performance*</td>
+                  <td className="p-3">B2C digital-first</td>
+                  <td className="p-3"><span className="text-slate-300/80">Dados públicos limitados</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* PROJEÇÕES */}
+          <div className="mt-10 grid lg:grid-cols-2 gap-6">
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Tamanho de mercado & contexto</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  O mercado global de suplementos anti-idade é estimado entre US$4.5–4.9 bi em 2024/2025, com CAGR ~8% até 2030–2034.
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-300/80">
+                  <li>Fonte (estimativa): Grand View Research 2024 e Precedence Research 2025.</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Cenário de alcance para parceiros (ilustrativo)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  Considerando um parceiro com distribuição nacional capturando 0,05% do mercado global projetado para 2025 (~US$4,88 bi), o volume anual potencial seria ~US$2,44 mi em sell-out. Em 0,1%: ~US$4,88 mi. *Valores ilustrativos; validar com seu canal e mix de SKUs.*
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <p className="mt-6 text-xs text-slate-400">*As menções a benefícios referem-se a literatura de ingredientes. Não se trata de alegações medicinais.</p>
+        </div>
+      </section>
+
+      {/* PARCERIA */}
+      <section id="parceria" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Modelos de Licenciamento</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Trabalhamos com modelos flexíveis de licenciamento, incluindo exclusividade por setor, região ou canal de distribuição, suporte de dossiê técnico, referências científicas e orientação de rotulagem/posicionamento.
+          </p>
+          <div className="mt-6 flex gap-3">
+            <Button size="lg" className="rounded-2xl"><Link href="/contato">Falar com nosso time</Link></Button>
+            <Button size="lg" variant="secondary" className="rounded-2xl"><Link href="#ciencia">Ver ciência</Link></Button>
+          </div>
+        </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section className="py-16">
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <h3 className="text-2xl font-semibold">Novidades da CelluNOVA</h3>
+          <p className="mt-2 text-slate-300/90">Entre para a lista de parceiros e receba materiais técnicos e oportunidades de licenciamento.</p>
+          <form className="mt-6 flex gap-3 justify-center">
+            <Input type="email" placeholder="Seu e-mail corporativo" className="max-w-sm rounded-2xl" />
+            <Button type="submit" className="rounded-2xl">Quero receber</Button>
+          </form>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-10 border-t border-white/10 text-sm text-slate-400">
+        <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} CelluNOVA LTDA. Todos os direitos reservados.</p>
+          <div className="flex gap-6">
+            <Link href="/politica-privacidade">Política de Privacidade</Link>
+            <Link href="/contato">Contato</Link>
+          </div>
+        </div>
+      </footer>
+
+      {/* Structured Data (JSON-LD) para Serviço de Licenciamento */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Licenciamento do blend DermoRebirth™',
+            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA' },
+            serviceType: 'Licensing',
+            areaServed: ['BR', 'US', 'EU'],
+            description: 'Licenciamento B2B do blend nutracêutico DermoRebirth™. Não vendemos ao consumidor final.'
+          }),
+        }}
+      />
+    </main>
+  );
+}
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { FlaskConical, ShieldCheck, Leaf, Clock, CheckCircle2, Star, Microscope, Beaker, PackageCheck, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
+export const metadata = {
+  title: "CelluNOVA DermoRebirth™ | Licenciamento de Blend – Bioactive Rejuvenation Formula",
+  description:
+    "DermoRebirth™ é o blend premium da CelluNOVA com Tremella, NMN, Chaga, Fisetina e Espermidina. Fórmula bioativa disponível para licenciamento B2B a empresas parceiras.",
+  openGraph: {
+    title: "CelluNOVA DermoRebirth™",
+    description:
+      "Blend premium com Tremella, NMN, Chaga, Fisetina e Espermidina. Disponível para licenciamento empresarial.",
+    url: "https://www.cellunovaresearch.com/",
+    siteName: "CelluNOVA Research",
+    images: [
+      {
+        url: "/images/propaganda-albert.png",
+        width: 1200,
+        height: 630,
+        alt: "Campanha CelluNOVA DermoRebirth™ — Genius is eternal. Now, youth is too.",
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+};
+
+const features = [
+  { icon: ShieldCheck, title: "Qualidade Premium", text: "Matérias-primas selecionadas e lote rastreável." },
+  { icon: FlaskConical, title: "Baseado em Evidências", text: "Blend desenvolvido com literatura científica de referência.*" },
+  { icon: Leaf, title: "Clean Label", text: "Sem corantes artificiais. Sem glúten." },
+  { icon: Clock, title: "Pronto para Licenciamento", text: "Integração ágil no portfólio da empresa parceira." },
+];
+
+const benefits = [
+  "Fórmula pronta para licenciamento e personalização pela empresa parceira",
+  "Composição diferenciada com suporte científico*",
+  "Potencial de posicionamento premium e alto LTV",
+  "Exclusividade negociável por região/linha de produto",
+];
+
+const ingredients = [
+  { name: "Tremella (Tremella fuciformis)", note: "Polissacarídeos associados à hidratação e elasticidade da pele*" },
+  { name: "NMN (Nicotinamida Mononucleotídeo)", note: "Precursor de NAD+ para suporte metabólico celular*" },
+  { name: "Chaga (Inonotus obliquus)", note: "Betaglucanos e polifenóis com ação antioxidante*" },
+  { name: "Fisetina", note: "Flavonóide estudado em protocolos de longevidade*" },
+  { name: "Espermidina", note: "Composto associado a processos autofágicos*" },
+];
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+      {/* HERO MARKETING (Propaganda Albert) */}
+      <section id="hero" className="relative pt-24 pb-8 overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-slate-300/80">
+              <PackageCheck className="size-4" /> Disponível para licenciamento
+            </span>
+            <h1 className="mt-3 text-4xl sm:text-5xl font-semibold leading-tight">
+              CelluNOVA <span className="text-fuchsia-400">DermoRebirth™</span>
+            </h1>
+            <p className="mt-4 text-slate-300/90 text-lg max-w-xl">
+              Bioactive Rejuvenation Formula com Tremella, NMN, Chaga, Fisetina e Espermidina —
+              pronta para integrar seu portfólio sob licenciamento B2B.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="rounded-2xl px-6">
+                <Link href="#parceria">Solicitar parceria</Link>
+              </Button>
+              <Button asChild variant="secondary" size="lg" className="rounded-2xl px-6">
+                <Link href="#comparativo">Ver comparativo</Link>
+              </Button>
+            </div>
+            <div className="mt-6 flex items-center gap-3 text-sm text-slate-300/80">
+              <Star className="size-4" /> Exclusividade negociável
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="relative">
+            <Image
+              src="/images/propaganda-albert.png"
+              alt="Campanha de marketing DermoRebirth™"
+              width={900}
+              height={900}
+              className="w-full h-auto rounded-2xl border border-white/10 shadow-2xl"
+              priority
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* STRIP DE PROVAS */}
+      <section className="py-6 border-y border-white/5 bg-black/20 backdrop-blur">
+        <div className="container mx-auto px-6 max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6">
+          {features.map((f, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <f.icon className="size-5 mt-0.5 text-fuchsia-300" />
+              <div>
+                <p className="text-sm font-medium">{f.title}</p>
+                <p className="text-xs text-slate-300/80">{f.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* BENEFÍCIOS + FOTO DO PRODUTO PILOTO */}
+      <section id="beneficios" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-3xl font-semibold">Oportunidade de Parceria</h2>
+            <p className="mt-3 text-slate-300/90 max-w-prose">
+              Licencie o DermoRebirth™ e ofereça ao mercado um produto exclusivo, com formulação respaldada por evidências e alto valor agregado. Produto (piloto) abaixo é referência do design e embalagem final a ser oferecida.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {benefits.map((b, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="size-5 mt-0.5 text-fuchsia-300" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader>
+              <CardTitle className="text-xl">Produto (piloto)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Image
+                src="/images/produto-piloto.png"
+                alt="Frasco piloto CelluNOVA DermoRebirth™"
+                width={720}
+                height={720}
+                className="w-full h-auto rounded-xl border border-white/10"
+              />
+              <div className="space-y-3">
+                {ingredients.map((ing, i) => (
+                  <div key={i} className="p-3 rounded-xl bg-black/30 border border-white/10">
+                    <p className="font-medium">{ing.name}</p>
+                    <p className="text-sm text-slate-300/80">{ing.note}</p>
+                  </div>
+                ))}
+                <p className="text-xs text-slate-400 pt-1">
+                  *As descrições referem-se a propriedades e literatura do(s) ingrediente(s). Consulte documentação técnica para detalhes.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* BASE CIENTÍFICA */}
+      <section id="ciencia" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2">
+              <h2 className="text-3xl font-semibold">Base científica</h2>
+              <p className="mt-3 text-slate-300/90 max-w-prose">
+                Mantemos um dossiê de referências para cada ingrediente do blend, com foco em protocolos, segurança de uso e sinergias potenciais em adultos saudáveis. Resumos técnicos disponíveis mediante solicitação.
+              </p>
+              <div className="mt-6 grid sm:grid-cols-2 gap-4">
+                {["Tremella e hidratação cutânea", "NMN e metabolismo celular", "Chaga e polifenóis antioxidantes", "Fisetina e estudos de longevidade", "Espermidina e processos autofágicos"].map((t, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                    <Beaker className="size-5 mt-0.5 text-fuchsia-300" />
+                    <div>
+                      <p className="font-medium">{t}</p>
+                      <p className="text-sm text-slate-300/80">Resumo técnico disponível mediante solicitação.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Transparência & Segurança</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>Lote rastreável e fornecedores com controle de qualidade.</p>
+                <p>Boas Práticas de Fabricação (BPF/GMP) no processo do parceiro fabricante.</p>
+                <p>Rótulo claro, sem promessas médicas. Indicado para maiores de 19 anos.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* COMPARATIVO DE MERCADO */}
+      <section id="comparativo" className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Comparativo de mercado (ingredientes & posicionamento)</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Abaixo, uma base comparativa lógica focada nos ingredientes principais e no posicionamento de mercado. Não se trata de equivalência clínica; usamos dados públicos e documentação de cada marca para comparação de proposta e composição.
+          </p>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full text-left text-sm border-separate border-spacing-y-2">
+              <thead className="text-slate-300/80">
+                <tr>
+                  <th className="py-2">Marca / Produto</th>
+                  <th className="py-2">Core da fórmula</th>
+                  <th className="py-2">Ângulo de claims</th>
+                  <th className="py-2">Modelo</th>
+                  <th className="py-2">Referências públicas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">CelluNOVA DermoRebirth™</td>
+                  <td className="p-3">Tremella + NMN + Chaga + Fisetina + Espermidina</td>
+                  <td className="p-3">Renovação celular, antioxidante, pele/vitalidade*</td>
+                  <td className="p-3">Licenciamento B2B; exclusividade opcional</td>
+                  <td className="p-3 text-fuchsia-200">Dossiê técnico sob NDA</td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">Elysium Health – Basis</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) + Pterostilbene</td>
+                  <td className="p-3">Suporte a NAD+ e envelhecimento celular*</td>
+                  <td className="p-3">B2C premium (assinatura)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/products/basis" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Site oficial</Link>
+                    <Link className="inline-flex items-center gap-1 underline" href="https://www.elysiumhealth.com/pages/basis-supplement-facts" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Fórmula pública</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5">
+                  <td className="p-3 font-medium">ChromaDex – Tru Niagen (portfólio NR)</td>
+                  <td className="p-3">Nicotinamide Riboside (NR) como ativo principal</td>
+                  <td className="p-3">Apoio a NAD+ e metabolismo celular*</td>
+                  <td className="p-3">B2C global; ingrediente B2B (Niagen®)</td>
+                  <td className="p-3 flex gap-3 flex-wrap">
+                    <Link className="inline-flex items-center gap-1 underline" href="https://companiesmarketcap.com/chromadex/revenue/" target="_blank" rel="noreferrer"><ExternalLink className="size-3"/>Receita 2024</Link>
+                  </td>
+                </tr>
+                <tr className="bg-white/5/50">
+                  <td className="p-3 font-medium">NOVOS (linhas longevity)
+                  </td>
+                  <td className="p-3">Combinações pró-longevidade (varia por SKU)</td>
+                  <td className="p-3">Healthy aging e performance*</td>
+                  <td className="p-3">B2C digital-first</td>
+                  <td className="p-3"><span className="text-slate-300/80">Dados públicos limitados</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* PROJEÇÕES */}
+          <div className="mt-10 grid lg:grid-cols-2 gap-6">
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Tamanho de mercado & contexto</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  O mercado global de suplementos anti-idade é estimado entre US$4.5–4.9 bi em 2024/2025, com CAGR ~8% até 2030–2034.
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-300/80">
+                  <li>Fonte (estimativa): Grand View Research 2024 e Precedence Research 2025.</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-xl">Cenário de alcance para parceiros (ilustrativo)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-300/90">
+                <p>
+                  Considerando um parceiro com distribuição nacional capturando 0,05% do mercado global projetado para 2025 (~US$4,88 bi), o volume anual potencial seria ~US$2,44 mi em sell-out. Em 0,1%: ~US$4,88 mi. *Valores ilustrativos; validar com seu canal e mix de SKUs.*
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <p className="mt-6 text-xs text-slate-400">*As menções a benefícios referem-se a literatura de ingredientes. Não se trata de alegações medicinais.</p>
+        </div>
+      </section>
+
+      {/* PARCERIA */}
+      <section id="parceria" className="py-16 border-y border-white/5 bg-black/30">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">Modelos de Licenciamento</h2>
+          <p className="mt-3 text-slate-300/90 max-w-prose">
+            Trabalhamos com modelos flexíveis de licenciamento, incluindo exclusividade por setor, região ou canal de distribuição, suporte de dossiê técnico, referências científicas e orientação de rotulagem/posicionamento.
+          </p>
+          <div className="mt-6 flex gap-3">
+            <Button size="lg" className="rounded-2xl"><Link href="/contato">Falar com nosso time</Link></Button>
+            <Button size="lg" variant="secondary" className="rounded-2xl"><Link href="#ciencia">Ver ciência</Link></Button>
+          </div>
+        </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section className="py-16">
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <h3 className="text-2xl font-semibold">Novidades da CelluNOVA</h3>
+          <p className="mt-2 text-slate-300/90">Entre para a lista de parceiros e receba materiais técnicos e oportunidades de licenciamento.</p>
+          <form className="mt-6 flex gap-3 justify-center">
+            <Input type="email" placeholder="Seu e-mail corporativo" className="max-w-sm rounded-2xl" />
+            <Button type="submit" className="rounded-2xl">Quero receber</Button>
+          </form>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-10 border-t border-white/10 text-sm text-slate-400">
+        <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} CelluNOVA LTDA. Todos os direitos reservados.</p>
+          <div className="flex gap-6">
+            <Link href="/politica-privacidade">Política de Privacidade</Link>
+            <Link href="/contato">Contato</Link>
+          </div>
+        </div>
+      </footer>
+
+      {/* Structured Data (JSON-LD) para Serviço de Licenciamento */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Licenciamento do blend DermoRebirth™',
+            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA' },
+            serviceType: 'Licensing',
+            areaServed: ['BR', 'US', 'EU'],
+            description: 'Licenciamento B2B do blend nutracêutico DermoRebirth™. Não vendemos ao consumidor final.'
+          }),
+        }}
+      />
+    </main>
   );
 }
