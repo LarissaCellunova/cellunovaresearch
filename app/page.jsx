@@ -22,7 +22,7 @@ export const metadata = {
     url: "https://www.cellunovaresearch.com/",
     siteName: "CelluNOVA Research",
     images: [
-      { url: "/images/propaganda-albert.png", width: 1200, height: 630, alt: "Campanha de marketing DermoRebirth™" },
+      { url: "/propaganda-albert.png", width: 1200, height: 630, alt: "Campanha de marketing DermoRebirth™" },
     ],
     locale: "pt_BR",
     type: "website",
