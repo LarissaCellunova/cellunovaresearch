@@ -2,38 +2,89 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-// Página sem dependências externas (sem shadcn, framer-motion ou ícones)
-// Coloque as imagens em /public/images/
-// - propaganda-albert.png (banner de marketing)
-// - produto-piloto.png   (frasco referência)
+// =============================
+// CelluNOVA — Home (B2B Licensing)
+// Pagina minimalista, sem dependências externas, segura para build na Vercel
+// Coloque as imagens em /public/images/ com estes nomes:
+//   - propaganda-albert.png (banner marketing no HERO)
+//   - produto-piloto.png   (frasco de referência)
+// Se estiver usando TypeScript, salve este arquivo como page.jsx para evitar erros de tipagem.
+// =============================
+
+export const metadata = {
+  title: "CelluNOVA DermoRebirth™ | Licenciamento do Blend",
+  description:
+    "DermoRebirth™ é um blend proprietário para rejuvenescimento, disponível para licenciamento B2B. Fórmula revelada apenas sob NDA (sem quantidades).",
+  openGraph: {
+    title: "CelluNOVA DermoRebirth™ | Licenciamento do Blend",
+    description:
+      "Blend proprietário de rejuvenescimento, disponível para licenciamento a parceiros. Fórmula sob NDA.",
+    url: "https://www.cellunovaresearch.com/",
+    siteName: "CelluNOVA Research",
+    images: [
+      { url: "/images/propaganda-albert.png", width: 1200, height: 630, alt: "Campanha de marketing DermoRebirth™" },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+};
+
+// -------- Helpers simples --------
+function formatUSDShort(n) {
+  if (n >= 1e9) return `$${(n / 1e9).toFixed(2)}B`;
+  if (n >= 1e6) return `$${(n / 1e6).toFixed(2)}M`;
+  if (n >= 1e3) return `$${(n / 1e3).toFixed(1)}K`;
+  return `$${n.toFixed(2)}`;
+}
+
+// Dados para projeções (ilustrativos — ajustar conforme estudos internos)
+const marketUSD = 4.88e9; // tamanho de mercado global estimado 2025 (anti-aging supplements)
+const scenarios = [
+  { label: "Participação 0,05%", value: marketUSD * 0.0005 },
+  { label: "Participação 0,10%", value: marketUSD * 0.001 },
+];
+
+function BarsSVG({ data }) {
+  const chartWidth = 640;
+  const barHeight = 28;
+  const gap = 18;
+  const maxVal = Math.max(...data.map((d) => d.value));
+  const totalHeight = data.length * (barHeight + gap) + 10;
+  return (
+    <svg viewBox={`0 0 ${chartWidth} ${totalHeight}`} className="w-full h-auto">
+      {data.map((d, i) => {
+        const w = Math.round((d.value / maxVal) * (chartWidth - 140));
+        const y = i * (barHeight + gap);
+        return (
+          <g key={i}>
+            <text x="0" y={y + barHeight - 8} className="fill-white" fontSize="12">{d.label}</text>
+            <rect x="140" y={y} width={w} height={barHeight} rx="8" className="fill-fuchsia-500" />
+            <text x={140 + w + 8} y={y + barHeight - 8} className="fill-white" fontSize="12">{formatUSDShort(d.value)}</text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
 
 export default function Home() {
   const features = [
-    { title: "Qualidade Premium", text: "Matérias-primas selecionadas e lote rastreável." },
-    { title: "Baseado em Evidências", text: "Blend desenvolvido com literatura científica de referência.*" },
-    { title: "Clean Label", text: "Sem corantes artificiais. Sem glúten." },
-    { title: "Pronto para Licenciamento", text: "Integração ágil no portfólio da empresa parceira." },
+    { title: "Blend proprietário", text: "Fórmula confidencial revelada apenas sob NDA (sem quantidades)." },
+    { title: "Pronto para licenciamento", text: "Modelos flexíveis, com opção de exclusividade por região/linha." },
+    { title: "Suporte técnico", text: "Dossiê de referências e orientação regulatória/rotulagem." },
+    { title: "Posicionamento premium", text: "Arquitetura de marca e materiais de lançamento inclusos." },
   ];
 
-  const benefits = [
-    "Fórmula pronta para licenciamento e personalização pela empresa parceira",
-    "Composição diferenciada com suporte científico*",
-    "Potencial de posicionamento premium e alto LTV",
-    "Exclusividade negociável por região/linha de produto",
-  ];
-
-  const ingredients = [
-    { name: "Tremella (Tremella fuciformis)", note: "Polissacarídeos associados à hidratação e elasticidade da pele*" },
-    { name: "NMN (Nicotinamida Mononucleotídeo)", note: "Precursor de NAD+ para suporte metabólico celular*" },
-    { name: "Chaga (Inonotus obliquus)", note: "Betaglucanos e polifenóis com ação antioxidante*" },
-    { name: "Fisetina", note: "Flavonóide estudado em protocolos de longevidade*" },
-    { name: "Espermidina", note: "Composto associado a processos autofágicos*" },
+  const comparativo = [
+    { marca: "CelluNOVA DermoRebirth™", core: "Composição proprietária (sob NDA)", claims: "Rejuvenescimento/healthy aging*", modelo: "Licenciamento B2B" , refs: "Dossiê técnico sob NDA" },
+    { marca: "Elysium Health — Basis", core: "NR + pterostilbene (público)", claims: "Suporte a NAD+ e envelhecimento*", modelo: "B2C assinatura", refs: "Site e factsheet públicos" },
+    { marca: "ChromaDex — Tru Niagen / Niagen®", core: "NR (público)", claims: "NAD+ e metabolismo celular*", modelo: "B2C global / ingrediente B2B", refs: "Relatórios e base de investidores" },
   ];
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
-      {/* HERO (Propaganda Albert) */}
-      <section id="hero" className="relative pt-24 pb-10">
+      {/* HERO */}
+      <section className="relative pt-24 pb-10">
         <div className="container mx-auto px-6 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           <div>
             <span className="inline-flex text-xs tracking-widest uppercase text-slate-300/80">Disponível para licenciamento</span>
@@ -41,29 +92,21 @@ export default function Home() {
               CelluNOVA <span className="text-fuchsia-400">DermoRebirth™</span>
             </h1>
             <p className="mt-4 text-slate-300/90 text-lg max-w-xl">
-              Bioactive Rejuvenation Formula com Tremella, NMN, Chaga, Fisetina e Espermidina — pronta para integrar seu portfólio sob licenciamento B2B.
+              Um blend proprietário de rejuvenescimento, desenvolvido para marcas que desejam lançar uma linha premium com base em evidências. A fórmula completa é fornecida apenas sob NDA — sem divulgação de quantidades — e o detalhamento final ocorre após o fechamento do contrato.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link href="#parceria" className="rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 px-6 py-3 text-white text-sm font-medium">Solicitar parceria</Link>
               <Link href="#comparativo" className="rounded-2xl bg-white/10 hover:bg-white/20 px-6 py-3 text-white text-sm font-medium">Ver comparativo</Link>
             </div>
-            <div className="mt-6 text-sm text-slate-300/80">Exclusividade negociável</div>
           </div>
 
           <div className="relative">
-            <Image
-              src="/images/propaganda-albert.png"
-              alt="Campanha de marketing DermoRebirth™"
-              width={900}
-              height={900}
-              className="w-full h-auto rounded-2xl border border-white/10 shadow-2xl"
-              priority
-            />
+            <Image src="/images/propaganda-albert.png" alt="Campanha DermoRebirth™" width={900} height={900} className="w-full h-auto rounded-2xl border border-white/10 shadow-2xl" priority />
           </div>
         </div>
       </section>
 
-      {/* STRIP DE PROVAS */}
+      {/* PROVAS RÁPIDAS */}
       <section className="py-6 border-y border-white/5 bg-black/20 backdrop-blur">
         <div className="container mx-auto px-6 max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6">
           {features.map((f, i) => (
@@ -78,87 +121,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BENEFÍCIOS + FOTO DO PRODUTO PILOTO */}
-      <section id="beneficios" className="py-16">
+      {/* PRODUTO PILOTO + TEXTO */}
+      <section className="py-16">
         <div className="container mx-auto px-6 max-w-6xl grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <h2 className="text-3xl font-semibold">Oportunidade de Parceria</h2>
+            <h2 className="text-3xl font-semibold">Produto (piloto)</h2>
             <p className="mt-3 text-slate-300/90 max-w-prose">
-              Licencie o DermoRebirth™ e ofereça ao mercado um produto exclusivo, com formulação respaldada por evidências e alto valor agregado. Produto (piloto) abaixo é referência do design e embalagem final a ser oferecida.
+              O frasco abaixo é uma referência visual do DermoRebirth™ para parceiros (design e embalagem do produto final). Especificações técnicas, fornecedores e protocolos de qualidade são apresentados apenas sob NDA.
             </p>
-            <ul className="mt-6 space-y-3">
-              {benefits.map((b, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <div className="mt-0.5 text-fuchsia-300">●</div>
-                  <span>{b}</span>
-                </li>
-              ))}
-            </ul>
           </div>
-
           <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-            <div className="text-xl font-semibold px-2 pt-2">Produto (piloto)</div>
-            <div className="space-y-4 p-2">
-              <Image
-                src="/images/produto-piloto.png"
-                alt="Frasco piloto CelluNOVA DermoRebirth™"
-                width={720}
-                height={720}
-                className="w-full h-auto rounded-xl border border-white/10"
-              />
-              <div className="space-y-3">
-                {ingredients.map((ing, i) => (
-                  <div key={i} className="p-3 rounded-xl bg-black/30 border border-white/10">
-                    <p className="font-medium">{ing.name}</p>
-                    <p className="text-sm text-slate-300/80">{ing.note}</p>
-                  </div>
-                ))}
-                <p className="text-xs text-slate-400 pt-1">
-                  *As descrições referem-se a propriedades e literatura do(s) ingrediente(s). Consulte documentação técnica para detalhes.
-                </p>
-              </div>
-            </div>
+            <Image src="/images/produto-piloto.png" alt="Frasco piloto CelluNOVA DermoRebirth™" width={720} height={720} className="w-full h-auto rounded-xl border border-white/10" />
           </div>
         </div>
       </section>
 
-      {/* BASE CIENTÍFICA */}
-      <section id="ciencia" className="py-16 border-y border-white/5 bg-black/30">
+      {/* COMPARATIVO DE MERCADO (alto nível, sem revelar fórmula) */}
+      <section id="comparativo" className="py-16 border-y border-white/5 bg-black/30">
         <div className="container mx-auto px-6 max-w-6xl">
-          <div className="grid lg:grid-cols-3 gap-8 items-start">
-            <div className="lg:col-span-2">
-              <h2 className="text-3xl font-semibold">Base científica</h2>
-              <p className="mt-3 text-slate-300/90 max-w-prose">
-                Mantemos um dossiê de referências para cada ingrediente do blend, com foco em protocolos, segurança de uso e sinergias potenciais em adultos saudáveis. Resumos técnicos disponíveis mediante solicitação.
-              </p>
-              <div className="mt-6 grid sm:grid-cols-2 gap-4">
-                {["Tremella e hidratação cutânea", "NMN e metabolismo celular", "Chaga e polifenóis antioxidantes", "Fisetina e estudos de longevidade", "Espermidina e processos autofágicos"].map((t, i) => (
-                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
-                    <div className="mt-0.5 text-fuchsia-300">●</div>
-                    <div>
-                      <p className="font-medium">{t}</p>
-                      <p className="text-sm text-slate-300/80">Resumo técnico disponível mediante solicitação.</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-sm text-slate-300/90">
-              <div className="text-xl font-semibold mb-3">Transparência & Segurança</div>
-              <p>Lote rastreável e fornecedores com controle de qualidade.</p>
-              <p>Boas Práticas de Fabricação (BPF/GMP) no processo do parceiro fabricante.</p>
-              <p>Rótulo claro, sem promessas médicas. Indicado para maiores de 19 anos.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* COMPARATIVO DE MERCADO */}
-      <section id="comparativo" className="py-16">
-        <div className="container mx-auto px-6 max-w-6xl">
-          <h2 className="text-3xl font-semibold">Comparativo de mercado (ingredientes & posicionamento)</h2>
+          <h2 className="text-3xl font-semibold">Comparativo de mercado (alto nível)</h2>
           <p className="mt-3 text-slate-300/90 max-w-prose">
-            Abaixo, uma base comparativa lógica focada nos ingredientes principais e no posicionamento de mercado. Não se trata de equivalência clínica; usamos dados públicos e documentação de cada marca para comparação de proposta e composição.
+            Base comparativa com marcas de referência em rejuvenescimento. As informações abaixo são públicas ou sob estimativas de mercado. O DermoRebirth™ mantém sua composição confidencial e é detalhado apenas mediante NDA.
           </p>
 
           <div className="mt-6 overflow-x-auto">
@@ -166,76 +149,51 @@ export default function Home() {
               <thead className="text-slate-300/80">
                 <tr>
                   <th className="py-2">Marca / Produto</th>
-                  <th className="py-2">Core da fórmula</th>
-                  <th className="py-2">Ângulo de claims</th>
+                  <th className="py-2">Núcleo da proposta</th>
+                  <th className="py-2">Ângulo de posicionamento</th>
                   <th className="py-2">Modelo</th>
-                  <th className="py-2">Referências públicas</th>
+                  <th className="py-2">Notas</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white/5">
-                  <td className="p-3 font-medium">CelluNOVA DermoRebirth™</td>
-                  <td className="p-3">Tremella + NMN + Chaga + Fisetina + Espermidina</td>
-                  <td className="p-3">Renovação celular, antioxidante, pele/vitalidade*</td>
-                  <td className="p-3">Licenciamento B2B; exclusividade opcional</td>
-                  <td className="p-3 text-fuchsia-200">Dossiê técnico sob NDA</td>
-                </tr>
-                <tr className="bg-white/5/50">
-                  <td className="p-3 font-medium">Elysium Health – Basis</td>
-                  <td className="p-3">Nicotinamide Riboside (NR) + Pterostilbene</td>
-                  <td className="p-3">Suporte a NAD+ e envelhecimento celular*</td>
-                  <td className="p-3">B2C premium (assinatura)</td>
-                  <td className="p-3"><a className="underline" href="https://www.elysiumhealth.com/products/basis" target="_blank" rel="noreferrer">Site oficial</a></td>
-                </tr>
-                <tr className="bg-white/5">
-                  <td className="p-3 font-medium">ChromaDex – Tru Niagen (portfólio NR)</td>
-                  <td className="p-3">Nicotinamide Riboside (NR) como ativo principal</td>
-                  <td className="p-3">Apoio a NAD+ e metabolismo celular*</td>
-                  <td className="p-3">B2C global; ingrediente B2B (Niagen®)</td>
-                  <td className="p-3"><a className="underline" href="https://companiesmarketcap.com/chromadex/revenue/" target="_blank" rel="noreferrer">Receita 2024</a></td>
-                </tr>
-                <tr className="bg-white/5/50">
-                  <td className="p-3 font-medium">NOVOS (linhas longevity)</td>
-                  <td className="p-3">Combinações pró-longevidade (varia por SKU)</td>
-                  <td className="p-3">Healthy aging e performance*</td>
-                  <td className="p-3">B2C digital-first</td>
-                  <td className="p-3"><span className="text-slate-300/80">Dados públicos limitados</span></td>
-                </tr>
+                {comparativo.map((c, i) => (
+                  <tr key={i} className={i % 2 ? "bg-white/5/50" : "bg-white/5"}>
+                    <td className="p-3 font-medium">{c.marca}</td>
+                    <td className="p-3">{c.core}</td>
+                    <td className="p-3">{c.claims}</td>
+                    <td className="p-3">{c.modelo}</td>
+                    <td className="p-3">{c.refs}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
 
-          {/* PROJEÇÕES */}
-          <div className="mt-10 grid lg:grid-cols-2 gap-6">
+          {/* PROJEÇÕES com gráfico SVG */}
+          <div className="mt-10 grid lg:grid-cols-2 gap-6 items-start">
             <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
               <div className="text-xl font-semibold mb-2">Tamanho de mercado & contexto</div>
               <div className="space-y-3 text-sm text-slate-300/90">
-                <p>O mercado global de suplementos anti-idade é estimado entre US$4.5–4.9 bi em 2024/2025, com CAGR ~8% até 2030–2034.</p>
-                <ul className="list-disc pl-5 space-y-1 text-slate-300/80">
-                  <li>Fonte (estimativa): Grand View Research 2024 e Precedence Research 2025.</li>
-                </ul>
+                <p>Mercado global de suplementos anti-idade estimado em ~{formatUSDShort(marketUSD)} em 2025, com crescimento anual composto (CAGR) próximo de 8% em projeções setoriais.</p>
+                <p className="text-slate-300/80">*Valores ilustrativos; use sua matriz de canais e margens para refinar a projeção.</p>
               </div>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <div className="text-xl font-semibold mb-2">Cenário de alcance para parceiros (ilustrativo)</div>
-              <div className="space-y-3 text-sm text-slate-300/90">
-                <p>Considerando um parceiro com distribuição nacional capturando 0,05% do mercado global projetado para 2025 (~US$4,88 bi), o sell-out anual potencial seria ~US$2,44 mi. Em 0,1%: ~US$4,88 mi. *Valores ilustrativos; validar com seu canal e mix de SKUs.*</p>
-              </div>
+              <div className="text-xl font-semibold mb-2">Cenários de alcance (sell‑out anual)</div>
+              <BarsSVG data={scenarios} />
             </div>
           </div>
-
-          <p className="mt-6 text-xs text-slate-400">*As menções a benefícios referem-se a literatura de ingredientes. Não se trata de alegações medicinais.</p>
         </div>
       </section>
 
       {/* PARCERIA */}
-      <section id="parceria" className="py-16 border-y border-white/5 bg-black/30">
+      <section id="parceria" className="py-16">
         <div className="container mx-auto px-6 max-w-6xl">
           <h2 className="text-3xl font-semibold">Modelos de Licenciamento</h2>
-          <p className="mt-3 text-slate-300/90 max-w-prose">Trabalhamos com modelos flexíveis de licenciamento, incluindo exclusividade por setor, região ou canal de distribuição, suporte de dossiê técnico, referências científicas e orientação de rotulagem/posicionamento.</p>
+          <p className="mt-3 text-slate-300/90 max-w-prose">Exclusividade por região/linha opcional, dossiê científico sob NDA, suporte em rotulagem/regulatório e materiais de lançamento. Fale com nosso time para roadmap e MOQs.</p>
           <div className="mt-6 flex gap-3">
-            <Link href="/contato" className="rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 px-6 py-3 text-white text-sm font-medium">Falar com nosso time</Link>
-            <Link href="#ciencia" className="rounded-2xl bg-white/10 hover:bg-white/20 px-6 py-3 text-white text-sm font-medium">Ver ciência</Link>
+            <Link href="/contato" className="rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 px-6 py-3 text-white text-sm font-medium">Falar com o time</Link>
+            <Link href="#" className="rounded-2xl bg-white/10 hover:bg-white/20 px-6 py-3 text-white text-sm font-medium">Solicitar NDA</Link>
           </div>
         </div>
       </section>
@@ -263,7 +221,7 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* JSON-LD de Serviço (Licenciamento) */}
+      {/* JSON-LD (Serviço de Licenciamento) */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -274,7 +232,7 @@ export default function Home() {
             provider: { '@type': 'Organization', name: 'CelluNOVA LTDA' },
             serviceType: 'Licensing',
             areaServed: ['BR', 'US', 'EU'],
-            description: 'Licenciamento B2B do blend nutracêutico DermoRebirth™. Não vendemos ao consumidor final.'
+            description: 'Licenciamento B2B do blend proprietario DermoRebirth™. Fórmula revelada apenas sob NDA (sem quantidades).',
           }),
         }}
       />
