@@ -125,7 +125,7 @@ const dict = {
       ["ChromaDex — Tru Niagen / Niagen®", "Composição pública (foco em NAD+)", "Saúde metabólica / portfólio global*", "B2C + ingrediente B2B", "Receita pública"],
     ],
     proj_title_1: "Tamanho de mercado & contexto",
-    proj_p_1: `Mercado global de suplementos anti‑idade ~${money(marketUSD)} (2025). CAGR próximo de 8% nas principais projeções setoriais.\`,
+    proj_p_1: `Mercado global de suplementos anti‑idade ~${money(marketUSD)} (2025). CAGR próximo de 8% nas principais projeções setoriais.`,
     proj_title_2: "Cenários de alcance (sell‑out anual)",
     scenarios: [
       { label: "Participação 0,05%", value: marketUSD * 0.0005 },
