@@ -27,7 +27,7 @@ export const metadata = {
 };
 
 // ---- Helpers ----
-const marketUSD = 4.88e9; // illustrative 2025 global market size
+const marketUSD = 4.88e9; // illustrative 2025 global market size (anti‑aging supplements)
 const money = (n) =>
   n >= 1e9 ? `$${(n / 1e9).toFixed(2)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${n.toFixed(0)}`;
 
@@ -67,27 +67,79 @@ const dict = {
     ],
     pilot_title: "Pilot product",
     pilot_p: "Visual reference (design/packaging). Specifications and suppliers are presented only under NDA.",
-    comp_title: "Market comparison (high‑level)",
+
+    // COMPARISON
+    comp_title: "Market comparison (data‑driven)",
     comp_p:
-      "Public/estimated information. DermoRebirth™ keeps its composition confidential, disclosed only under NDA.",
-    comp_headers: ["Brand / Product", "Core proposal", "Positioning angle", "Model", "Notes"],
-    rows: [
-      ["CelluNOVA DermoRebirth™", "Proprietary composition (under NDA)", "Rejuvenation / healthy aging*", "B2B licensing; optional exclusivity", "Technical dossier under NDA"],
-      ["Elysium Health — Basis", "Public composition (NAD+ focus)", "Cellular aging / premium subscription*", "B2C", "Official site"],
-      ["ChromaDex — Tru Niagen / Niagen®", "Public composition (NAD+ focus)", "Metabolic health / global portfolio*", "B2C + B2B ingredient", "Public revenue"],
+      "High‑level view of leading players and models. DermoRebirth™ keeps composition confidential and is disclosed only under NDA.",
+    comp_headers: [
+      "Brand / Product",
+      "Core proposal",
+      "Positioning angle",
+      "Model",
+      "Revenue scale",
+      "Formula disclosure",
+      "Licensing",
+      "Notes",
     ],
+    rows: [
+      [
+        "CelluNOVA DermoRebirth™",
+        "Proprietary composition (under NDA)",
+        "Rejuvenation / healthy aging*",
+        "B2B licensing; optional exclusivity",
+        "—",
+        "Confidential",
+        "Yes (licensing)",
+        "Technical dossier under NDA",
+      ],
+      [
+        "Elysium Health — Basis",
+        "Public composition (NAD+ focus)",
+        "Cellular aging / premium subscription*",
+        "B2C",
+        "Private (not disclosed)",
+        "Public (NR + pterostilbene)",
+        "No",
+        "Official site",
+      ],
+      [
+        "ChromaDex — Tru Niagen / Niagen®",
+        "Public composition (NAD+ focus)",
+        "Metabolic health / global portfolio*",
+        "B2C + B2B ingredient",
+        "~$100M FY2024 (public)",
+        "Public (NR / Niagen®)",
+        "Ingredient supply",
+        "Public revenue",
+      ],
+    ],
+
+    // PROJECTIONS
     proj_title_1: "Market size & context",
     proj_p_1: `Global anti‑aging supplements market ~${money(marketUSD)} (2025). CAGR near 8% in major sector projections.`,
     proj_title_2: "Reach scenarios (annual sell‑out)",
     scenarios: [
       { label: "0.05% share", value: marketUSD * 0.0005 },
       { label: "0.10% share", value: marketUSD * 0.001 },
+      { label: "0.25% share", value: marketUSD * 0.0025 },
     ],
+
+    // VALUE PROPS WITH NUMBERS
+    why_title: "Why partners choose DermoRebirth™",
+    why_points: [
+      "Time‑to‑market as fast as 6–12 weeks (depending on partner ops).",
+      "5‑pillar bioactive architecture (hydration, cellular energy, oxidation balance, senescence modulation, autophagy support) — details under NDA.",
+      "Benchmark gross margin range for premium nutraceuticals: 60–75% (illustrative).",
+      "Optional regional/category exclusivity tied to volume commitments.",
+    ],
+
     partner_title: "Licensing models",
     partner_p:
       "Optional exclusivity by region/line, scientific dossier under NDA, labeling/regulatory support and launch materials.",
     partner_cta_1: "Talk to our team",
     partner_cta_2: "Request NDA",
+
     news_title: "CelluNOVA updates",
     news_p: "Join the partners list to receive technical materials and licensing opportunities.",
     newsletter_placeholder: "Your corporate email",
@@ -115,27 +167,76 @@ const dict = {
     ],
     pilot_title: "Produto (piloto)",
     pilot_p: "Referência visual (design/embalagem). Especificações e fornecedores são apresentados apenas sob NDA.",
-    comp_title: "Comparativo de mercado (alto nível)",
+
+    comp_title: "Comparativo de mercado (com dados)",
     comp_p:
-      "Informações públicas/estimativas. DermoRebirth™ mantém composição confidencial, detalhada apenas sob NDA.",
-    comp_headers: ["Marca / Produto", "Núcleo da proposta", "Ângulo de posicionamento", "Modelo", "Notas"],
-    rows: [
-      ["CelluNOVA DermoRebirth™", "Composição proprietária (sob NDA)", "Rejuvenescimento / healthy aging*", "Licenciamento B2B; exclusividade opcional", "Dossiê técnico sob NDA"],
-      ["Elysium Health — Basis", "Composição pública (foco em NAD+)", "Envelhecimento celular / assinatura premium*", "B2C", "Site oficial"],
-      ["ChromaDex — Tru Niagen / Niagen®", "Composição pública (foco em NAD+)", "Saúde metabólica / portfólio global*", "B2C + ingrediente B2B", "Receita pública"],
+      "Visão de alto nível dos principais players e modelos. O DermoRebirth™ mantém sua composição confidencial e é detalhado apenas sob NDA.",
+    comp_headers: [
+      "Marca / Produto",
+      "Núcleo da proposta",
+      "Ângulo de posicionamento",
+      "Modelo",
+      "Escala de receita",
+      "Divulgação da fórmula",
+      "Licenciamento",
+      "Notas",
     ],
+    rows: [
+      [
+        "CelluNOVA DermoRebirth™",
+        "Composição proprietária (sob NDA)",
+        "Rejuvenescimento / healthy aging*",
+        "Licenciamento B2B; exclusividade opcional",
+        "—",
+        "Confidencial",
+        "Sim (licenciamento)",
+        "Dossiê técnico sob NDA",
+      ],
+      [
+        "Elysium Health — Basis",
+        "Composição pública (foco em NAD+)",
+        "Envelhecimento celular / assinatura premium*",
+        "B2C",
+        "Privada (não divulgada)",
+        "Pública (NR + pterostilbene)",
+        "Não",
+        "Site oficial",
+      ],
+      [
+        "ChromaDex — Tru Niagen / Niagen®",
+        "Composição pública (foco em NAD+)",
+        "Saúde metabólica / portfólio global*",
+        "B2C + ingrediente B2B",
+        "~$100M FY2024 (público)",
+        "Pública (NR / Niagen®)",
+        "Ingrediente (fornecimento)",
+        "Receita pública",
+      ],
+    ],
+
     proj_title_1: "Tamanho de mercado & contexto",
     proj_p_1: `Mercado global de suplementos anti‑idade ~${money(marketUSD)} (2025). CAGR próximo de 8% nas principais projeções setoriais.`,
     proj_title_2: "Cenários de alcance (sell‑out anual)",
     scenarios: [
       { label: "Participação 0,05%", value: marketUSD * 0.0005 },
       { label: "Participação 0,10%", value: marketUSD * 0.001 },
+      { label: "Participação 0,25%", value: marketUSD * 0.0025 },
     ],
+
+    why_title: "Por que parceiros escolhem o DermoRebirth™",
+    why_points: [
+      "Time‑to‑market a partir de 6–12 semanas (depende das operações do parceiro).",
+      "Arquitetura bioativa em 5 pilares (hidratação, energia celular, equilíbrio oxidativo, modulação de senescência, suporte à autofagia) — detalhes sob NDA.",
+      "Faixa de margem bruta de referência para nutracêuticos premium: 60–75% (ilustrativo).",
+      "Exclusividade regional/categoria opcional vinculada a compromissos de volume.",
+    ],
+
     partner_title: "Modelos de Licenciamento",
     partner_p:
       "Exclusividade por região/linha opcional, dossiê científico sob NDA, suporte em rotulagem/regulatório e materiais de lançamento.",
     partner_cta_1: "Falar com o time",
     partner_cta_2: "Solicitar NDA",
+
     news_title: "Novidades da CelluNOVA",
     news_p: "Entre para a lista de parceiros e receba materiais técnicos e oportunidades de licenciamento.",
     newsletter_placeholder: "Seu e‑mail corporativo",
@@ -219,19 +320,18 @@ export default function Home({ searchParams }) {
               <tbody>
                 {t.rows.map((r, i) => (
                   <tr key={i} className={i % 2 ? "bg-white/5/50" : "bg-white/5"}>
-                    <td className="p-3 font-medium">{r[0]}</td>
-                    <td className="p-3">{r[1]}</td>
-                    <td className="p-3">{r[2]}</td>
-                    <td className="p-3">{r[3]}</td>
-                    <td className="p-3">
-                      {r[4] === (lang==='en' ? 'Official site' : 'Site oficial') && (
-                        <a className="underline" href="https://www.elysiumhealth.com/products/basis" target="_blank" rel="noreferrer">{r[4]}</a>
-                      )}
-                      {r[4] === (lang==='en' ? 'Public revenue' : 'Receita pública') && (
-                        <a className="underline" href="https://companiesmarketcap.com/chromadex/revenue/" target="_blank" rel="noreferrer">{r[4]}</a>
-                      )}
-                      {r[4] !== (lang==='en' ? 'Official site' : 'Site oficial') && r[4] !== (lang==='en' ? 'Public revenue' : 'Receita pública') && r[4]}
-                    </td>
+                    {r.map((cell, j) => (
+                      <td key={j} className={`p-3 ${j === 0 ? 'font-medium' : ''}`}>
+                        {/* turn specific cells into links when label matches */}
+                        {(() => {
+                          const os = lang==='en' ? 'Official site' : 'Site oficial';
+                          const pr = lang==='en' ? 'Public revenue' : 'Receita pública';
+                          if (cell === os) return <a className="underline" href="https://www.elysiumhealth.com/products/basis" target="_blank" rel="noreferrer">{cell}</a>;
+                          if (cell === pr) return <a className="underline" href="https://companiesmarketcap.com/chromadex/revenue/" target="_blank" rel="noreferrer">{cell}</a>;
+                          return cell;
+                        })()}
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>
@@ -255,23 +355,48 @@ export default function Home({ searchParams }) {
         </div>
       </section>
 
+      {/* Chart image (comparison) */}
+      <section className="py-12">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h3 className="text-2xl font-semibold">
+            {lang === 'en' ? 'Refined benefit comparison — CelluNOVA vs top anti‑aging blends' : 'Comparativo refinado de benefícios — CelluNOVA vs blends líderes'}
+          </h3>
+          <div className="mt-4 bg-white/5 border border-white/10 rounded-2xl p-3">
+            <Image src="/benefit-comparison.jpeg" alt={lang === 'en' ? 'Benefit comparison chart' : 'Gráfico de comparativo de benefícios'} width={1600} height={800} className="w-full h-auto rounded-xl border border-white/10" />
+            <p className="mt-2 text-xs text-slate-400">
+              {lang === 'en' ? 'Illustrative scoring (0–10) across key dimensions. Created for partner presentations; full method under NDA.' : 'Pontuação ilustrativa (0–10) em dimensões‑chave. Criado para apresentações a parceiros; método completo sob NDA.'}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY / VALUE WITH NUMBERS */}
+      <section className="py-16">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <h2 className="text-3xl font-semibold">{t.why_title}</h2>
+          <ul className="mt-6 grid gap-3">
+            {t.why_points.map((p, i) => (
+              <li key={i} className="flex items-start gap-3"><div className="mt-0.5 text-fuchsia-300">●</div><span>{p}</span></li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* PARTNERSHIP */}
       <section id="parceria" className="py-16">
         <div className="container mx-auto px-6 max-w-6xl">
           <h2 className="text-3xl font-semibold">{t.partner_title}</h2>
           <p className="mt-3 text-slate-300/90 max-w-prose">{t.partner_p}</p>
           <div className="mt-6 flex gap-3">
-            <a href="mailto:larissa.guimaraes@cellunovaresearch.com" className="rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_1}</a>
-            <a href="mailto:larissa.guimaraes@cellunovaresearch.com?subject=NDA%20Request%20-%20DermoRebirth&body=Hello%20CelluNOVA%20team%2C%0D%0A%0D%0APlease%20send%20the%20Mutual%20NDA%20for%20DermoRebirth%20licensing.%0D%0A%0D%0AThanks." className="rounded-2xl bg-white/10 hover:bg-white/20 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_2}</a>
+            <a href="mailto:larrisa.guimaraes@cellunovaresearch.com" className="rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_1}</a>
+            <a href="mailto:larrisa.guimaraes@cellunovaresearch.com?subject=NDA%20Request%20-%20DermoRebirth&body=Hello%20CelluNOVA%20team%2C%0D%0A%0D%0APlease%20send%20the%20Mutual%20NDA%20for%20DermoRebirth%20licensing.%0D%0A%0D%0AThanks." className="rounded-2xl bg-white/10 hover:bg-white/20 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_2}</a>
           </div>
           <p className="mt-3 text-slate-300/80 text-sm">
             {lang === 'en' ? 'Or email us directly at: ' : 'Ou envie um e-mail diretamente para: '}
-            <a href="mailto:larissa.guimaraes@cellunovaresearch.com" className="underline break-words">larissa.guimaraes@cellunovaresearch.com</a>
+            <a href="mailto:larrisa.guimaraes@cellunovaresearch.com" className="underline break-words">larrisa.guimaraes@cellunovaresearch.com</a>
           </p>
         </div>
       </section>
-
-      
 
       {/* FOOTER */}
       <footer className="py-10 border-t border-white/10 text-sm text-slate-400">
@@ -279,7 +404,7 @@ export default function Home({ searchParams }) {
           <p>© {new Date().getFullYear()} CelluNOVA LTDA. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="/politica-privacidade">{t.footer_priv}</a>
-            <a href="mailto:larissa.guimaraes@cellunovaresearch.com">{t.footer_contact}</a>
+            <a href="mailto:larrisa.guimaraes@cellunovaresearch.com">{t.footer_contact}</a>
           </div>
         </div>
       </footer>
@@ -292,7 +417,7 @@ export default function Home({ searchParams }) {
             '@context': 'https://schema.org',
             '@type': 'Service',
             name: 'DermoRebirth™ blend licensing',
-            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA', email: 'larissa.guimaraes@cellunovaresearch.com', contactPoint: [{ '@type': 'ContactPoint', contactType: 'business development', email: 'larissa.guimaraes@cellunovaresearch.com' }] },
+            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA', email: 'larrisa.guimaraes@cellunovaresearch.com', contactPoint: [{ '@type': 'ContactPoint', contactType: 'business development', email: 'larrisa.guimaraes@cellunovaresearch.com' }] },
             serviceType: 'Licensing',
             areaServed: ['BR', 'US', 'EU'],
             description: 'B2B licensing of the proprietary DermoRebirth™ blend. Full formula disclosed only under NDA (no quantities).',
