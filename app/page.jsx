@@ -153,7 +153,6 @@ export default function Home({ searchParams }) {
   const lang = (searchParams && searchParams.lang === "pt") ? "pt" : "en";
   const t = dict[lang];
   const scenarios = t.scenarios; // language-aware labels
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
       {/* LANGUAGE TOGGLE */}
@@ -272,17 +271,7 @@ export default function Home({ searchParams }) {
         </div>
       </section>
 
-      {/* NEWSLETTER */}
-      <section className="py-16">
-        <div className="container mx-auto px-6 max-w-3xl text-center">
-          <h3 className="text-2xl font-semibold">{t.news_title}</h3>
-          <p className="mt-2 text-slate-300/90">{t.news_p}</p>
-          <form className="mt-6 flex gap-3 justify-center">
-            <input type="email" placeholder={t.newsletter_placeholder} className="max-w-sm w-full rounded-2xl bg-white/10 px-4 py-3 outline-none focus:ring-2 focus:ring-fuchsia-500" />
-            <button type="submit" className="rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 px-6 py-3 text-white text-sm font-medium">{t.newsletter_cta}</button>
-          </form>
-        </div>
-      </section>
+      
 
       {/* FOOTER */}
       <footer className="py-10 border-t border-white/10 text-sm text-slate-400">
