@@ -388,12 +388,12 @@ export default function Home({ searchParams }) {
           <h2 className="text-3xl font-semibold">{t.partner_title}</h2>
           <p className="mt-3 text-slate-300/90 max-w-prose">{t.partner_p}</p>
           <div className="mt-6 flex gap-3">
-            <a href="mailto:larrisa.guimaraes@cellunovaresearch.com" className="rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_1}</a>
-            <a href="mailto:larrisa.guimaraes@cellunovaresearch.com?subject=NDA%20Request%20-%20DermoRebirth&body=Hello%20CelluNOVA%20team%2C%0D%0A%0D%0APlease%20send%20the%20Mutual%20NDA%20for%20DermoRebirth%20licensing.%0D%0A%0D%0AThanks." className="rounded-2xl bg-white/10 hover:bg-white/20 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_2}</a>
+            <a href="mailto:larissa.guimaraes@cellunovaresearch.com" className="rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_1}</a>
+            <a href="mailto:larissa.guimaraes@cellunovaresearch.com?subject=NDA%20Request%20-%20DermoRebirth&body=Hello%20CelluNOVA%20team%2C%0D%0A%0D%0APlease%20send%20the%20Mutual%20NDA%20for%20DermoRebirth%20licensing.%0D%0A%0D%0AThanks." className="rounded-2xl bg-white/10 hover:bg-white/20 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_2}</a>
           </div>
           <p className="mt-3 text-slate-300/80 text-sm">
             {lang === 'en' ? 'Or email us directly at: ' : 'Ou envie um e-mail diretamente para: '}
-            <a href="mailto:larrisa.guimaraes@cellunovaresearch.com" className="underline break-words">larrisa.guimaraes@cellunovaresearch.com</a>
+            <a href="mailto:larissa.guimaraes@cellunovaresearch.com" className="underline break-words">larissa.guimaraes@cellunovaresearch.com</a>
           </p>
         </div>
       </section>
@@ -404,7 +404,7 @@ export default function Home({ searchParams }) {
           <p>© {new Date().getFullYear()} CelluNOVA LTDA. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="/politica-privacidade">{t.footer_priv}</a>
-            <a href="mailto:larrisa.guimaraes@cellunovaresearch.com">{t.footer_contact}</a>
+            <a href="mailto:larissa.guimaraes@cellunovaresearch.com">{t.footer_contact}</a>
           </div>
         </div>
       </footer>
@@ -417,7 +417,7 @@ export default function Home({ searchParams }) {
             '@context': 'https://schema.org',
             '@type': 'Service',
             name: 'DermoRebirth™ blend licensing',
-            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA', email: 'larrisa.guimaraes@cellunovaresearch.com', contactPoint: [{ '@type': 'ContactPoint', contactType: 'business development', email: 'larrisa.guimaraes@cellunovaresearch.com' }] },
+            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA', email: 'larissa.guimaraes@cellunovaresearch.com', contactPoint: [{ '@type': 'ContactPoint', contactType: 'business development', email: 'larissa.guimaraes@cellunovaresearch.com' }] },
             serviceType: 'Licensing',
             areaServed: ['BR', 'US', 'EU'],
             description: 'B2B licensing of the proprietary DermoRebirth™ blend. Full formula disclosed only under NDA (no quantities).',
