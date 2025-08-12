@@ -125,7 +125,7 @@ const dict = {
       ["ChromaDex — Tru Niagen / Niagen®", "Composição pública (foco em NAD+)", "Saúde metabólica / portfólio global*", "B2C + ingrediente B2B", "Receita pública"],
     ],
     proj_title_1: "Tamanho de mercado & contexto",
-    proj_p_1: `Mercado global de suplementos anti‑idade ~${money(marketUSD)} (2025). CAGR próximo de 8% nas principais projeções setoriais.`,
+    proj_p_1: `Mercado global de suplementos anti‑idade ~${money(marketUSD)} (2025). CAGR próximo de 8% nas principais projeções setoriais.`,,
     proj_title_2: "Cenários de alcance (sell‑out anual)",
     scenarios: [
       { label: "Participação 0,05%", value: marketUSD * 0.0005 },
@@ -262,8 +262,8 @@ export default function Home({ searchParams }) {
           <h2 className="text-3xl font-semibold">{t.partner_title}</h2>
           <p className="mt-3 text-slate-300/90 max-w-prose">{t.partner_p}</p>
           <div className="mt-6 flex gap-3">
-            <a href="/contato" className="rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_1}</a>
-            <a href="#" className="rounded-2xl bg-white/10 hover:bg-white/20 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_2}</a>
+            <a href="mailto:larrisa.guimaraes@cellunovaresearch.com" className="rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_1}</a>
+            <a href="mailto:larrisa.guimaraes@cellunovaresearch.com?subject=NDA%20Request%20-%20DermoRebirth&body=Hello%20CelluNOVA%20team%2C%0D%0A%0D%0APlease%20send%20the%20Mutual%20NDA%20for%20DermoRebirth%20licensing.%0D%0A%0D%0AThanks." className="rounded-2xl bg-white/10 hover:bg-white/20 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_2}</a>
           </div>
         </div>
       </section>
@@ -286,7 +286,7 @@ export default function Home({ searchParams }) {
           <p>© {new Date().getFullYear()} CelluNOVA LTDA. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="/politica-privacidade">{t.footer_priv}</a>
-            <a href="/contato">{t.footer_contact}</a>
+            <a href="mailto:larrisa.guimaraes@cellunovaresearch.com">{t.footer_contact}</a>
           </div>
         </div>
       </footer>
@@ -299,7 +299,7 @@ export default function Home({ searchParams }) {
             '@context': 'https://schema.org',
             '@type': 'Service',
             name: 'DermoRebirth™ blend licensing',
-            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA' },
+            provider: { '@type': 'Organization', name: 'CelluNOVA LTDA', email: 'larrisa.guimaraes@cellunovaresearch.com', contactPoint: [{ '@type': 'ContactPoint', contactType: 'business development', email: 'larrisa.guimaraes@cellunovaresearch.com' }] },
             serviceType: 'Licensing',
             areaServed: ['BR', 'US', 'EU'],
             description: 'B2B licensing of the proprietary DermoRebirth™ blend. Full formula disclosed only under NDA (no quantities).',
@@ -309,3 +309,4 @@ export default function Home({ searchParams }) {
     </main>
   );
 }
+
