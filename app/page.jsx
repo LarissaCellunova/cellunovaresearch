@@ -265,6 +265,10 @@ export default function Home({ searchParams }) {
             <a href="mailto:larrisa.guimaraes@cellunovaresearch.com" className="rounded-2xl bg-fuchsia-600 hover:bg-fuchsia-500 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_1}</a>
             <a href="mailto:larrisa.guimaraes@cellunovaresearch.com?subject=NDA%20Request%20-%20DermoRebirth&body=Hello%20CelluNOVA%20team%2C%0D%0A%0D%0APlease%20send%20the%20Mutual%20NDA%20for%20DermoRebirth%20licensing.%0D%0A%0D%0AThanks." className="rounded-2xl bg-white/10 hover:bg-white/20 px-6 py-3 text-white text-sm font-medium">{t.partner_cta_2}</a>
           </div>
+          <p className="mt-3 text-slate-300/80 text-sm">
+            {lang === 'en' ? 'Or email us directly at: ' : 'Ou envie um e-mail diretamente para: '}
+            <a href="mailto:larrisa.guimaraes@cellunovaresearch.com" className="underline break-words">larrisa.guimaraes@cellunovaresearch.com</a>
+          </p>
         </div>
       </section>
 
